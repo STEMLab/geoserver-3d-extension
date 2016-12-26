@@ -21,15 +21,19 @@
 		<constructor-arg ref="geoServer"/>
 		<property name="filterFactory" ref="filterFactory"/>
 	</bean-->
-	<bean id="wfsServiceTarget" class="org.geoserver.wfs.ISODefaultWebFeatureService">
+	
+	<!-- the shared filter factory -->
+    <bean id="filterFactory3d" class="org.geotools.filter.ISOFilterFactoryImpl"/>
+	
+	<bean id="ISOwfsServiceTarget" class="org.geoserver.wfs.ISODefaultWebFeatureService">
 		<constructor-arg ref="geoServer"/>
-		<property name="filterFactory" ref="filterFactory"/>
+		<property name="filterFactory" ref="filterFactory3d"/>
 	</bean>
 
     <bean id="wfsLogger" class="org.geoserver.ows.util.EMFLogger">
       <constructor-arg type="java.lang.String" value="org.geoserver.wfs"/>
     </bean>
-	<bean id="wfsService" class="org.springframework.aop.framework.ProxyFactoryBean">
+	<bean id="wfsServiceISO" class="org.springframework.aop.framework.ProxyFactoryBean">
 	  <property name="proxyInterfaces">
 	  	<value>org.geoserver.wfs.WebFeatureService</value>
 	  </property>
@@ -37,15 +41,15 @@
 	  	<list>
 	  		<value>wfsLogger</value>
             <value>wfsServiceInterceptor*</value>
-	  		<value>wfsServiceTarget</value>
+	  		<value>ISOwfsServiceTarget</value>
 	  	</list>
 	  </property>
 	</bean>
 
-	<bean id="wfsService-1.1.0" class="org.geoserver.platform.Service">
-		<constructor-arg index="0" value="wfs"/>
+	<bean id="wfsService-1.1.1" class="org.geoserver.platform.Service">
+		<constructor-arg index="0" value="wfs3d"/>
 		<constructor-arg index="1" value="http://www.opengis.net/wfs"/>
-		<constructor-arg index="2" ref="wfsService"/>
+		<constructor-arg index="2" ref="wfsServiceISO"/>
 		<constructor-arg index="3" value="1.1.1"/>
 		<constructor-arg index="4">
           <list>
@@ -58,6 +62,27 @@
             <value>Transaction</value>
           </list>
         </constructor-arg>
+	</bean>
+	
+	<!-- http url mapping -->
+	<bean id="wfsURLMappingISO"
+        class="org.geoserver.ows.OWSHandlerMapping">
+        <constructor-arg ref="catalog"/> 
+		<property name="alwaysUseFullPath" value="true"/>
+		<property name="interceptors">
+			<list>
+				<ref bean="wfsCiteComplianceHack"/>
+				<ref bean="xmlPostRequestLogBufferSize"/>
+			</list>
+		</property>
+	
+		<property name="mappings">
+			<props>
+				<prop key="/wfs3d">dispatcher</prop>
+				<prop key="/wfs3d/*">dispatcher</prop>
+				<prop key="/TestWfsPost">wfsTestServlet</prop>
+			</props>
+		</property>
 	</bean>
 	
 	<bean id="wfs3dService" class="org.geoserver.wfs.WFS3DTest"/>

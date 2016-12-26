@@ -40,8 +40,8 @@ import org.geoserver.wfs.request.Lock;
 import org.geoserver.wfs.request.LockFeatureRequest;
 import org.geoserver.wfs.request.LockFeatureResponse;
 import org.geoserver.wfs.request.Query;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
+import org.geotools.data.ISODataUtilities;
 import org.geotools.data.Join;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.Hints;
@@ -56,7 +56,6 @@ import org.geotools.filter.visitor.AbstractFilterVisitor;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.geometry.GeneralEnvelope;
-import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.xml.Encoder;
@@ -469,9 +468,9 @@ public class GetFeature3D {
                         //only do this for simple features, complex mandatory features are handled by app-schema
                         if (meta.getFeatureType() instanceof SimpleFeatureType) {
                             metaAllPropNames = 
-                                DataUtilities.addMandatoryProperties((SimpleFeatureType) meta.getFeatureType(), metaAllPropNames);
+                                ISODataUtilities.addMandatoryProperties((SimpleFeatureType) meta.getFeatureType(), metaAllPropNames);
                             metaPropNames = 
-                                DataUtilities.addMandatoryProperties((SimpleFeatureType) meta.getFeatureType(), metaPropNames);
+                                ISODataUtilities.addMandatoryProperties((SimpleFeatureType) meta.getFeatureType(), metaPropNames);
                         }
                         //for complex features, mandatory properties need to be handled by datastore.
                     }
@@ -587,7 +586,7 @@ public class GetFeature3D {
                         residualNames[j] = it.next().getPropertyName();
                         j++;
                     }
-                    SimpleFeatureType targetType = DataUtilities.createSubType((SimpleFeatureType) features.getSchema(), residualNames);
+                    SimpleFeatureType targetType = ISODataUtilities.createSubType((SimpleFeatureType) features.getSchema(), residualNames);
                     features = new FeatureBoundsFeatureCollection((SimpleFeatureCollection) features, targetType);
                 }
 
@@ -1053,7 +1052,7 @@ public class GetFeature3D {
         }
         
         //tell the datastore to use a lite coordinate sequence factory, if possible
-        hints.put(Hints.JTS_COORDINATE_SEQUENCE_FACTORY, new LiteCoordinateSequenceFactory());
+        //hints.put(Hints.JTS_COORDINATE_SEQUENCE_FACTORY, new LiteCoordinateSequenceFactory());
         
         // check for sql view parameters
         if(viewParams != null) {
@@ -1306,7 +1305,7 @@ O:      for (String propName : query.getPropertyNames()) {
         }
         
     }
-     
+    
     protected List<PropertyName> addGeometryProperties (FeatureTypeInfo meta, List<PropertyName> oldProperties) throws IOException {
         List<AttributeTypeInfo> atts = meta.attributes();
         Iterator ii = atts.iterator();
