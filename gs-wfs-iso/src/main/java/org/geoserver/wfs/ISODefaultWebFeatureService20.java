@@ -30,7 +30,7 @@ import org.geoserver.config.GeoServer;
 import org.geoserver.wfs.request.DescribeFeatureTypeRequest;
 import org.geoserver.wfs.request.FeatureCollectionResponse;
 import org.geoserver.wfs.request.GetCapabilitiesRequest;
-import org.geoserver.wfs.request.GetFeatureRequest;
+import org.geoserver.wfs.request.GetFeatureRequest3D;
 import org.geoserver.wfs.request.LockFeatureRequest;
 import org.geoserver.wfs.request.TransactionRequest;
 import org.geotools.xml.transform.TransformerBase;
@@ -86,7 +86,7 @@ public class ISODefaultWebFeatureService20 implements WebFeatureService20, Appli
     
     public FeatureTypeInfo[] describeFeatureType(DescribeFeatureTypeType request)
             throws WFSException {
-        return new DescribeFeatureType(getServiceInfo(), getCatalog())
+        return new DescribeFeatureType3D(getServiceInfo(), getCatalog())
             .run(new DescribeFeatureTypeRequest.WFS20(request));
     }
 
@@ -95,7 +95,7 @@ public class ISODefaultWebFeatureService20 implements WebFeatureService20, Appli
         gf.setFilterFactory(filterFactory);
         gf.setStoredQueryProvider(getStoredQueryProvider());
         
-        return gf.run(new GetFeatureRequest.WFS20(request));
+        return gf.run(new GetFeatureRequest3D.WFS20(request));
     }
     
     public FeatureCollectionResponse getFeatureWithLock(GetFeatureWithLockType request)

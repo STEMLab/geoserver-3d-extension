@@ -22,7 +22,7 @@ import org.geoserver.config.GeoServer;
 import org.geoserver.wfs.request.DescribeFeatureTypeRequest;
 import org.geoserver.wfs.request.FeatureCollectionResponse;
 import org.geoserver.wfs.request.GetCapabilitiesRequest;
-import org.geoserver.wfs.request.GetFeatureRequest;
+import org.geoserver.wfs.request.GetFeatureRequest3D;
 import org.geoserver.wfs.request.LockFeatureRequest;
 import org.geoserver.wfs.request.TransactionRequest;
 import org.geotools.xml.transform.TransformerBase;
@@ -102,7 +102,7 @@ public class ISODefaultWebFeatureService implements WebFeatureService, Applicati
      */
     public FeatureTypeInfo[] describeFeatureType(DescribeFeatureTypeType request)
         throws WFSException {
-        return new DescribeFeatureType(getServiceInfo(), catalog)
+        return new DescribeFeatureType3D(getServiceInfo(), catalog)
             .run(new DescribeFeatureTypeRequest.WFS11(request));
     }
 
@@ -120,7 +120,7 @@ public class ISODefaultWebFeatureService implements WebFeatureService, Applicati
         GetFeature3D getFeature = new GetFeature3D(getServiceInfo(), catalog);
         getFeature.setFilterFactory(filterFactory);
 
-        return getFeature.run(new GetFeatureRequest.WFS11(request));
+        return getFeature.run(new GetFeatureRequest3D.WFS11(request));
     }
 
     /**

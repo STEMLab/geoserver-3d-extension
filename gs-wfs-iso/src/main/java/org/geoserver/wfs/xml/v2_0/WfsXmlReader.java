@@ -15,9 +15,9 @@ import org.geoserver.ows.XmlRequestReader;
 import org.geoserver.platform.ServiceException;
 import org.geoserver.wfs.WFSException;
 import org.geoserver.wfs.WFSInfo;
-import org.geoserver.wfs.xml.FeatureTypeSchemaBuilder;
+import org.geoserver.wfs.xml.ISOFeatureTypeSchemaBuilder;
 import org.geoserver.wfs.xml.WFSURIHandler;
-import org.geoserver.wfs.xml.WFSXmlUtils;
+import org.geoserver.wfs.xml.WFSXmlUtils_ISO;
 import org.geoserver.util.EntityResolverProvider;
 import org.geotools.util.Version;
 import org.geotools.wfs.v2_0.WFS;
@@ -42,18 +42,18 @@ public class WfsXmlReader extends XmlRequestReader {
     
     @Override
     public Object read(Object request, Reader reader, Map kvp) throws Exception {
-        WFSConfiguration config = new WFSConfiguration();
-        WFSXmlUtils.initWfsConfiguration(config, gs, new FeatureTypeSchemaBuilder.GML32(gs));
+        WFSConfiguration_ISO config = new WFSConfiguration_ISO();
+        WFSXmlUtils_ISO.initWfsConfiguration(config, gs, new ISOFeatureTypeSchemaBuilder.GML32(gs));
         
         Parser parser = new Parser(config);
         parser.setEntityResolver(entityResolverProvider.getEntityResolver());
         
         WFSInfo wfs = wfs();
         
-        WFSXmlUtils.initRequestParser(parser, wfs, gs, kvp);
+        WFSXmlUtils_ISO.initRequestParser(parser, wfs, gs, kvp);
         Object parsed = null;
         try {
-            parsed = WFSXmlUtils.parseRequest(parser, reader, wfs);    
+            parsed = WFSXmlUtils_ISO.parseRequest(parser, reader, wfs);    
         }
         catch(Exception e) {
             //check the exception, and set code to OperationParsingFailed if code not set
@@ -63,7 +63,7 @@ public class WfsXmlReader extends XmlRequestReader {
             throw e;
         }
 
-        WFSXmlUtils.checkValidationErrors(parser, this);
+        WFSXmlUtils_ISO.checkValidationErrors(parser, this);
         
         return parsed;
     }

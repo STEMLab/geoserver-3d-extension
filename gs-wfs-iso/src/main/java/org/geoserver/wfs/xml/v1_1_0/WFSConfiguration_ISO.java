@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import net.opengis.wfs.WfsFactory;
-
 import org.geoserver.catalog.Catalog;
 import org.geoserver.catalog.CoverageStoreInfo;
 import org.geoserver.catalog.DataStoreInfo;
@@ -28,57 +26,16 @@ import org.geoserver.config.ServiceInfo;
 import org.geoserver.ows.xml.v1_0.OWSConfiguration;
 import org.geoserver.wfs.CatalogFeatureTypeCache;
 import org.geoserver.wfs.WFSInfo;
-import org.geoserver.wfs.xml.FeatureTypeSchemaBuilder;
+import org.geoserver.wfs.xml.ISOFeatureTypeSchemaBuilder;
+import org.geoserver.wfs.xml.ISOWFSHandlerFactory;
 import org.geoserver.wfs.xml.PropertyTypePropertyExtractor;
-import org.geoserver.wfs.xml.WFSHandlerFactory;
-import org.geoserver.wfs.xml.WFSXmlUtils;
+import org.geoserver.wfs.xml.WFSXmlUtils_ISO;
 import org.geoserver.wfs.xml.XSQNameBinding;
 import org.geoserver.wfs.xml.filter.v1_1.FilterTypeBinding;
 import org.geoserver.wfs.xml.filter.v1_1.PropertyNameTypeBinding;
 import org.geoserver.wfs.xml.gml3.CircleTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.ActionTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.AllSomeTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.BaseRequestTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.Base_TypeNameListTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.DeleteElementTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.DescribeFeatureTypeTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.FeatureCollectionTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.FeatureReferenceTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.FeatureTypeListTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.FeatureTypeTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.FeaturesLockedTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.FeaturesNotLockedTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.GMLObjectTypeListTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.GMLObjectTypeTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.GetCapabilitiesTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.GetFeatureTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.GetFeatureWithLockTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.GetGmlObjectTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.IdentifierGenerationOptionTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.InsertElementTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.InsertResultTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.InsertedFeatureTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.LockFeatureResponseTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.LockFeatureTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.LockTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.MetadataURLTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.NativeTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.OperationTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.OperationsTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.OutputFormatListTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.PropertyTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.QueryTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.ResultTypeTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.TransactionResponseTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.TransactionResultsTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.TransactionSummaryTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.TransactionTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.TypeNameListTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.UpdateElementTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.WFS;
-import org.geoserver.wfs.xml.v1_1_0.WFS_CapabilitiesTypeBinding;
-import org.geoserver.wfs.xml.v1_1_0.XlinkPropertyNameBinding;
 import org.geotools.data.DataAccess;
+import org.geotools.filter.iso.v1_1.OGCConfiguration_ISO;
 import org.geotools.filter.v1_0.OGCBBOXTypeBinding;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.filter.v1_1.OGCConfiguration;
@@ -87,6 +44,7 @@ import org.geotools.gml2.FeatureTypeCache;
 import org.geotools.gml2.SrsSyntax;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GMLConfiguration;
+import org.geotools.gml3.GMLConfiguration_ISO;
 import org.geotools.util.logging.Logging;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.OptionalComponentParameter;
@@ -98,7 +56,9 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.defaults.SetterInjectionComponentAdapter;
 
-public class WFSConfiguration extends Configuration {
+import net.opengis.wfs.WfsFactory;
+
+public class WFSConfiguration_ISO extends Configuration {
     /**
      * logger
      */
@@ -112,9 +72,9 @@ public class WFSConfiguration extends Configuration {
     /**
      * Schema builder
      */
-    protected FeatureTypeSchemaBuilder schemaBuilder;
+    protected ISOFeatureTypeSchemaBuilder schemaBuilder;
 
-    public WFSConfiguration(GeoServer geoServer, FeatureTypeSchemaBuilder schemaBuilder, final WFS wfs) {
+    public WFSConfiguration_ISO(GeoServer geoServer, ISOFeatureTypeSchemaBuilder schemaBuilder, final WFS_ISO wfs) {
         super( wfs );
 
         this.catalog = geoServer.getCatalog();
@@ -172,95 +132,95 @@ public class WFSConfiguration extends Configuration {
                 }
             }
         });
-        addDependency(new OGCConfiguration());
+        addDependency(new OGCConfiguration_ISO());
         addDependency(new OWSConfiguration());
-        addDependency(new GMLConfiguration());
+        addDependency(new GMLConfiguration_ISO());
         // OGC and OWS add two extra GML configurations in the mix, make sure to configure them
         // all...
-        CurvedGeometryFactory gf = new CurvedGeometryFactory(Double.MAX_VALUE);
+        /*CurvedGeometryFactory gf = new CurvedGeometryFactory(Double.MAX_VALUE);
         for (Object configuration : allDependencies()) {
             if (configuration instanceof GMLConfiguration) {
                 GMLConfiguration gml = (GMLConfiguration) configuration;
                 gml.setGeometryFactory(gf);
             }
-        }
+        }*/
 
     }
 
     public void setSrsSyntax(SrsSyntax srsSyntax) {
-        WFSXmlUtils.setSrsSyntax(this, srsSyntax);
+        WFSXmlUtils_ISO.setSrsSyntax(this, srsSyntax);
     }
 
     public SrsSyntax getSrsSyntax() {
-        return WFSXmlUtils.getSrsSyntax(this);
+        return WFSXmlUtils_ISO.getSrsSyntax(this);
     }
     
     protected void registerBindings(MutablePicoContainer container) {
         //Types
-        container.registerComponentImplementation(WFS.ACTIONTYPE, ActionTypeBinding.class);
-        container.registerComponentImplementation(WFS.ALLSOMETYPE, AllSomeTypeBinding.class);
-        container.registerComponentImplementation(WFS.BASE_TYPENAMELISTTYPE,
+        container.registerComponentImplementation(WFS_ISO.ACTIONTYPE, ActionTypeBinding.class);
+        container.registerComponentImplementation(WFS_ISO.ALLSOMETYPE, AllSomeTypeBinding.class);
+        container.registerComponentImplementation(WFS_ISO.BASE_TYPENAMELISTTYPE,
             Base_TypeNameListTypeBinding.class);
-        container.registerComponentImplementation(WFS.BASEREQUESTTYPE, BaseRequestTypeBinding.class);
-        container.registerComponentImplementation(WFS.DELETEELEMENTTYPE,
+        container.registerComponentImplementation(WFS_ISO.BASEREQUESTTYPE, BaseRequestTypeBinding.class);
+        container.registerComponentImplementation(WFS_ISO.DELETEELEMENTTYPE,
             DeleteElementTypeBinding.class);
-        container.registerComponentImplementation(WFS.DESCRIBEFEATURETYPETYPE,
+        container.registerComponentImplementation(WFS_ISO.DESCRIBEFEATURETYPETYPE,
             DescribeFeatureTypeTypeBinding.class);
-        container.registerComponentImplementation(WFS.FEATURECOLLECTIONTYPE,
+        container.registerComponentImplementation(WFS_ISO.FEATURECOLLECTIONTYPE,
             FeatureCollectionTypeBinding.class);
-        container.registerComponentImplementation(WFS.FEATURESLOCKEDTYPE,
+        container.registerComponentImplementation(WFS_ISO.FEATURESLOCKEDTYPE,
             FeaturesLockedTypeBinding.class);
-        container.registerComponentImplementation(WFS.FEATURESNOTLOCKEDTYPE,
+        container.registerComponentImplementation(WFS_ISO.FEATURESNOTLOCKEDTYPE,
             FeaturesNotLockedTypeBinding.class);
-        container.registerComponentImplementation(WFS.FEATURETYPELISTTYPE,
+        container.registerComponentImplementation(WFS_ISO.FEATURETYPELISTTYPE,
             FeatureTypeListTypeBinding.class);
-        container.registerComponentImplementation(WFS.FEATURETYPETYPE, FeatureTypeTypeBinding.class);
-        container.registerComponentImplementation(WFS.GETCAPABILITIESTYPE,
+        container.registerComponentImplementation(WFS_ISO.FEATURETYPETYPE, FeatureTypeTypeBinding.class);
+        container.registerComponentImplementation(WFS_ISO.GETCAPABILITIESTYPE,
             GetCapabilitiesTypeBinding.class);
-        container.registerComponentImplementation(WFS.GETFEATURETYPE, GetFeatureTypeBinding.class);
-        container.registerComponentImplementation(WFS.GETFEATUREWITHLOCKTYPE,
+        container.registerComponentImplementation(WFS_ISO.GETFEATURETYPE, GetFeatureTypeBinding.class);
+        container.registerComponentImplementation(WFS_ISO.GETFEATUREWITHLOCKTYPE,
             GetFeatureWithLockTypeBinding.class);
-        container.registerComponentImplementation(WFS.GETGMLOBJECTTYPE,
+        container.registerComponentImplementation(WFS_ISO.GETGMLOBJECTTYPE,
             GetGmlObjectTypeBinding.class);
-        container.registerComponentImplementation(WFS.GMLOBJECTTYPELISTTYPE,
+        container.registerComponentImplementation(WFS_ISO.GMLOBJECTTYPELISTTYPE,
             GMLObjectTypeListTypeBinding.class);
-        container.registerComponentImplementation(WFS.GMLOBJECTTYPETYPE,
+        container.registerComponentImplementation(WFS_ISO.GMLOBJECTTYPETYPE,
             GMLObjectTypeTypeBinding.class);
-        container.registerComponentImplementation(WFS.IDENTIFIERGENERATIONOPTIONTYPE,
+        container.registerComponentImplementation(WFS_ISO.IDENTIFIERGENERATIONOPTIONTYPE,
             IdentifierGenerationOptionTypeBinding.class);
-        container.registerComponentImplementation(WFS.INSERTEDFEATURETYPE,
+        container.registerComponentImplementation(WFS_ISO.INSERTEDFEATURETYPE,
             InsertedFeatureTypeBinding.class);
-        container.registerComponentImplementation(WFS.INSERTELEMENTTYPE,
+        container.registerComponentImplementation(WFS_ISO.INSERTELEMENTTYPE,
             InsertElementTypeBinding.class);
-        container.registerComponentImplementation(WFS.INSERTRESULTSTYPE,
+        container.registerComponentImplementation(WFS_ISO.INSERTRESULTSTYPE,
             InsertResultTypeBinding.class);
-        container.registerComponentImplementation(WFS.LOCKFEATURERESPONSETYPE,
+        container.registerComponentImplementation(WFS_ISO.LOCKFEATURERESPONSETYPE,
             LockFeatureResponseTypeBinding.class);
-        container.registerComponentImplementation(WFS.LOCKFEATURETYPE, LockFeatureTypeBinding.class);
-        container.registerComponentImplementation(WFS.LOCKTYPE, LockTypeBinding.class);
-        container.registerComponentImplementation(WFS.METADATAURLTYPE, MetadataURLTypeBinding.class);
-        container.registerComponentImplementation(WFS.NATIVETYPE, NativeTypeBinding.class);
-        container.registerComponentImplementation(WFS.OPERATIONSTYPE, OperationsTypeBinding.class);
-        container.registerComponentImplementation(WFS.OPERATIONTYPE, OperationTypeBinding.class);
-        container.registerComponentImplementation(WFS.OUTPUTFORMATLISTTYPE,
+        container.registerComponentImplementation(WFS_ISO.LOCKFEATURETYPE, LockFeatureTypeBinding.class);
+        container.registerComponentImplementation(WFS_ISO.LOCKTYPE, LockTypeBinding.class);
+        container.registerComponentImplementation(WFS_ISO.METADATAURLTYPE, MetadataURLTypeBinding.class);
+        container.registerComponentImplementation(WFS_ISO.NATIVETYPE, NativeTypeBinding.class);
+        container.registerComponentImplementation(WFS_ISO.OPERATIONSTYPE, OperationsTypeBinding.class);
+        container.registerComponentImplementation(WFS_ISO.OPERATIONTYPE, OperationTypeBinding.class);
+        container.registerComponentImplementation(WFS_ISO.OUTPUTFORMATLISTTYPE,
             OutputFormatListTypeBinding.class);
-        container.registerComponentImplementation(WFS.PROPERTYTYPE, PropertyTypeBinding.class);
-        container.registerComponentImplementation(WFS.QUERYTYPE, QueryTypeBinding.class);
-        container.registerComponentImplementation(WFS.RESULTTYPETYPE, ResultTypeTypeBinding.class);
-        container.registerComponentImplementation(WFS.TRANSACTIONRESPONSETYPE,
+        container.registerComponentImplementation(WFS_ISO.PROPERTYTYPE, PropertyTypeBinding.class);
+        container.registerComponentImplementation(WFS_ISO.QUERYTYPE, QueryTypeBinding.class);
+        container.registerComponentImplementation(WFS_ISO.RESULTTYPETYPE, ResultTypeTypeBinding.class);
+        container.registerComponentImplementation(WFS_ISO.TRANSACTIONRESPONSETYPE,
             TransactionResponseTypeBinding.class);
-        container.registerComponentImplementation(WFS.TRANSACTIONRESULTSTYPE,
+        container.registerComponentImplementation(WFS_ISO.TRANSACTIONRESULTSTYPE,
             TransactionResultsTypeBinding.class);
-        container.registerComponentImplementation(WFS.TRANSACTIONSUMMARYTYPE,
+        container.registerComponentImplementation(WFS_ISO.TRANSACTIONSUMMARYTYPE,
             TransactionSummaryTypeBinding.class);
-        container.registerComponentImplementation(WFS.TRANSACTIONTYPE, TransactionTypeBinding.class);
-        container.registerComponentImplementation(WFS.TYPENAMELISTTYPE,
+        container.registerComponentImplementation(WFS_ISO.TRANSACTIONTYPE, TransactionTypeBinding.class);
+        container.registerComponentImplementation(WFS_ISO.TYPENAMELISTTYPE,
             TypeNameListTypeBinding.class);
-        container.registerComponentImplementation(WFS.UPDATEELEMENTTYPE,
+        container.registerComponentImplementation(WFS_ISO.UPDATEELEMENTTYPE,
             UpdateElementTypeBinding.class);
-        container.registerComponentImplementation(WFS.WFS_CAPABILITIESTYPE,
+        container.registerComponentImplementation(WFS_ISO.WFS_CAPABILITIESTYPE,
             WFS_CapabilitiesTypeBinding.class);
-        container.registerComponentImplementation(WFS.XLINKPROPERTYNAME, 
+        container.registerComponentImplementation(WFS_ISO.XLINKPROPERTYNAME, 
             XlinkPropertyNameBinding.class);
 
         //cite specific bindings
@@ -283,7 +243,7 @@ public class WFSConfiguration extends Configuration {
         super.configureContext(context);
 
         context.registerComponentInstance(WfsFactory.eINSTANCE);
-        context.registerComponentInstance(new WFSHandlerFactory(catalog, schemaBuilder));
+        context.registerComponentInstance(new ISOWFSHandlerFactory(catalog, schemaBuilder));
         context.registerComponentInstance(catalog);
         context.registerComponentImplementation(PropertyTypePropertyExtractor.class);
         context.registerComponentInstance(getSrsSyntax());
@@ -304,7 +264,7 @@ public class WFSConfiguration extends Configuration {
             PropertyNameTypeBinding.class);
         bindings.put(GML.CircleType, CircleTypeBinding.class);
 
-        WFSXmlUtils.registerAbstractGeometryTypeBinding(this, bindings, GML.AbstractGeometryType);
+        WFSXmlUtils_ISO.registerAbstractGeometryTypeBinding(this, bindings, GML.AbstractGeometryType);
 
         // use setter injection for OGCBBoxTypeBinding to allow an 
         // optional crs to be set in teh binding context for parsing, this crs

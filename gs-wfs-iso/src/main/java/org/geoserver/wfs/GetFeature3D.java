@@ -35,7 +35,7 @@ import org.geoserver.ows.Request;
 import org.geoserver.ows.URLMangler.URLType;
 import org.geoserver.ows.util.KvpMap;
 import org.geoserver.wfs.request.FeatureCollectionResponse;
-import org.geoserver.wfs.request.GetFeatureRequest;
+import org.geoserver.wfs.request.GetFeatureRequest3D;
 import org.geoserver.wfs.request.Lock;
 import org.geoserver.wfs.request.LockFeatureRequest;
 import org.geoserver.wfs.request.LockFeatureResponse;
@@ -224,7 +224,7 @@ public class GetFeature3D {
         this.storedQueryProvider = storedQueryProvider;
     }
 
-    public FeatureCollectionResponse run(GetFeatureRequest request)
+    public FeatureCollectionResponse run(GetFeatureRequest3D request)
         throws WFSException {
         List<Query> queries = request.getQueries();
 
@@ -687,7 +687,7 @@ public class GetFeature3D {
 
 
 
-    protected void processStoredQueries(GetFeatureRequest request) {
+    protected void processStoredQueries(GetFeatureRequest3D request) {
         List queries = request.getAdaptedQueries();
         for (int i = 0; i < queries.size(); i++) {
             Object obj = queries.get(i);
@@ -716,7 +716,7 @@ public class GetFeature3D {
     /**
      * Allows subclasses to alter the result generation
      */
-    protected FeatureCollectionResponse buildResults(GetFeatureRequest request, int offset, int maxFeatures, 
+    protected FeatureCollectionResponse buildResults(GetFeatureRequest3D request, int offset, int maxFeatures, 
         int count, BigInteger total, List results, String lockId) {
 
         FeatureCollectionResponse result = request.createResponse();
@@ -777,7 +777,7 @@ public class GetFeature3D {
         return result;
     }
 
-    KvpMap buildKvpFromRequest(GetFeatureRequest request) {
+    KvpMap buildKvpFromRequest(GetFeatureRequest3D request) {
         
         // FILTER_LANGUAGE
         // RESOURCEID
@@ -937,7 +937,7 @@ public class GetFeature3D {
      */
     public org.geotools.data.Query toDataQuery(Query query, Filter filter, int offset,
             int maxFeatures, FeatureSource<? extends FeatureType, ? extends Feature> source,
-            GetFeatureRequest request, List<PropertyName> props, Map<String, String> viewParams,
+            GetFeatureRequest3D request, List<PropertyName> props, Map<String, String> viewParams,
             List<Join> joins, QName primaryTypeName, String primaryAlias) throws WFSException {
         
         String wfsVersion = request.getVersion();
@@ -1103,7 +1103,7 @@ public class GetFeature3D {
         return visitor.getFilterPost() == null || visitor.getFilterPost() == Filter.INCLUDE;
     }
 
-    FeatureTypeInfo featureTypeInfo(QName name, GetFeatureRequest request) throws WFSException, IOException {
+    FeatureTypeInfo featureTypeInfo(QName name, GetFeatureRequest3D request) throws WFSException, IOException {
         FeatureTypeInfo meta = catalog.getFeatureTypeByName(name.getNamespaceURI(), name.getLocalPart());
 
         if (meta == null) {
@@ -1157,7 +1157,7 @@ O:      for (String propName : query.getPropertyNames()) {
         return propNames;
     }
 
-    void validateSortBy(List<SortBy> sortBys, FeatureTypeInfo meta, final GetFeatureRequest request)
+    void validateSortBy(List<SortBy> sortBys, FeatureTypeInfo meta, final GetFeatureRequest3D request)
             throws IOException {
         FeatureType featureType = meta.getFeatureType();
         for (SortBy sortBy : sortBys) {
@@ -1170,7 +1170,7 @@ O:      for (String propName : query.getPropertyNames()) {
     }
 
     void validateFilter(Filter filter, Query query, final FeatureTypeInfo meta,
-            final GetFeatureRequest request)
+            final GetFeatureRequest3D request)
         throws IOException {
       //1. ensure any property name refers to a property that 
         // actually exists

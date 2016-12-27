@@ -9,9 +9,6 @@ package org.geoserver.wfs.xml.v1_0_0;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import net.opengis.ows10.Ows10Factory;
-import net.opengis.wfs.WfsFactory;
-
 import org.geoserver.catalog.Catalog;
 import org.geoserver.catalog.CoverageStoreInfo;
 import org.geoserver.catalog.DataStoreInfo;
@@ -24,20 +21,20 @@ import org.geoserver.catalog.event.CatalogModifyEvent;
 import org.geoserver.catalog.event.CatalogPostModifyEvent;
 import org.geoserver.catalog.event.CatalogRemoveEvent;
 import org.geoserver.wfs.CatalogFeatureTypeCache;
-import org.geoserver.wfs.xml.FeatureTypeSchemaBuilder;
+import org.geoserver.wfs.xml.ISOFeatureTypeSchemaBuilder;
+import org.geoserver.wfs.xml.ISOWFSHandlerFactory;
 import org.geoserver.wfs.xml.PropertyTypePropertyExtractor;
-import org.geoserver.wfs.xml.WFSHandlerFactory;
-import org.geoserver.wfs.xml.WFSXmlUtils;
-import org.geoserver.wfs.xml.gml2.GMLBoxTypeBinding;
+import org.geoserver.wfs.xml.WFSXmlUtils_ISO;
+import org.geoserver.wfs.xml.gml2.GMLBoxTypeBinding_ISO;
 import org.geotools.data.DataAccess;
-import org.geotools.filter.v1_0.OGCBBOXTypeBinding;
-import org.geotools.filter.v1_0.OGCConfiguration;
-import org.geotools.filter.v1_0.OGCConfiguration_ISO;
+import org.geotools.filter.iso.v1_0.OGCBBOXTypeBinding;
+import org.geotools.filter.iso.v1_0.OGCConfiguration_ISO;
 import org.geotools.filter.v1_1.OGC;
+import org.geotools.geometry.GeometryBuilder;
 import org.geotools.gml2.FeatureTypeCache;
 import org.geotools.gml2.GML;
-import org.geotools.gml2.GMLConfiguration;
-import org.geotools.gml2.GMLConfiguration_ISO;
+import org.geotools.gml2.iso.GMLConfiguration_ISO;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.logging.Logging;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.OptionalComponentParameter;
@@ -48,13 +45,16 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.Parameter;
 import org.picocontainer.defaults.SetterInjectionComponentAdapter;
 
+import net.opengis.ows10.Ows10Factory;
+import net.opengis.wfs.WfsFactory;
+
 /**
  * Parser configuration for wfs 1.0.
  *
  * @author Justin Deoliveira, The Open Planning Project
  * TODO: this class duplicates a lot of what is is in the 1.1 configuration, merge them
  */
-public class WFSConfiguration extends Configuration {
+public class WFSConfiguration_ISO extends Configuration {
     /**
      * logger
      */
@@ -62,9 +62,9 @@ public class WFSConfiguration extends Configuration {
 
     
     Catalog catalog;
-    FeatureTypeSchemaBuilder schemaBuilder;
+    ISOFeatureTypeSchemaBuilder schemaBuilder;
 
-    public WFSConfiguration(Catalog catalog, FeatureTypeSchemaBuilder schemaBuilder, final WFS wfs) {
+    public WFSConfiguration_ISO(Catalog catalog, ISOFeatureTypeSchemaBuilder schemaBuilder, final WFS_ISO wfs) {
         super( wfs );
 
         this.catalog = catalog;
@@ -120,41 +120,41 @@ public class WFSConfiguration extends Configuration {
 
     protected void registerBindings(MutablePicoContainer container) {
       //Types
-        container.registerComponentImplementation(WFS.ALLSOMETYPE, AllSomeTypeBinding.class);
-        container.registerComponentImplementation(WFS.DELETEELEMENTTYPE,
+        container.registerComponentImplementation(WFS_ISO.ALLSOMETYPE, AllSomeTypeBinding.class);
+        container.registerComponentImplementation(WFS_ISO.DELETEELEMENTTYPE,
             DeleteElementTypeBinding.class);
-        container.registerComponentImplementation(WFS.DESCRIBEFEATURETYPETYPE,
+        container.registerComponentImplementation(WFS_ISO.DESCRIBEFEATURETYPETYPE,
             DescribeFeatureTypeTypeBinding.class);
-        container.registerComponentImplementation(WFS.EMPTYTYPE, EmptyTypeBinding.class);
-        container.registerComponentImplementation(WFS.FEATURECOLLECTIONTYPE,
+        container.registerComponentImplementation(WFS_ISO.EMPTYTYPE, EmptyTypeBinding.class);
+        container.registerComponentImplementation(WFS_ISO.FEATURECOLLECTIONTYPE,
             FeatureCollectionTypeBinding.class);
-        container.registerComponentImplementation(WFS.FEATURESLOCKEDTYPE,
+        container.registerComponentImplementation(WFS_ISO.FEATURESLOCKEDTYPE,
             FeaturesLockedTypeBinding.class);
-        container.registerComponentImplementation(WFS.FEATURESNOTLOCKEDTYPE,
+        container.registerComponentImplementation(WFS_ISO.FEATURESNOTLOCKEDTYPE,
             FeaturesNotLockedTypeBinding.class);
-        container.registerComponentImplementation(WFS.GETCAPABILITIESTYPE,
+        container.registerComponentImplementation(WFS_ISO.GETCAPABILITIESTYPE,
             GetCapabilitiesTypeBinding.class);
-        container.registerComponentImplementation(WFS.GETFEATURETYPE, GetFeatureTypeBinding.class);
-        container.registerComponentImplementation(WFS.GETFEATUREWITHLOCKTYPE,
+        container.registerComponentImplementation(WFS_ISO.GETFEATURETYPE, GetFeatureTypeBinding.class);
+        container.registerComponentImplementation(WFS_ISO.GETFEATUREWITHLOCKTYPE,
             GetFeatureWithLockTypeBinding.class);
-        container.registerComponentImplementation(WFS.INSERTELEMENTTYPE,
+        container.registerComponentImplementation(WFS_ISO.INSERTELEMENTTYPE,
             InsertElementTypeBinding.class);
-        container.registerComponentImplementation(WFS.INSERTRESULTTYPE,
+        container.registerComponentImplementation(WFS_ISO.INSERTRESULTTYPE,
             InsertResultTypeBinding.class);
-        container.registerComponentImplementation(WFS.LOCKFEATURETYPE, LockFeatureTypeBinding.class);
-        container.registerComponentImplementation(WFS.LOCKTYPE, LockTypeBinding.class);
-        container.registerComponentImplementation(WFS.NATIVETYPE, NativeTypeBinding.class);
-        container.registerComponentImplementation(WFS.PROPERTYTYPE, PropertyTypeBinding.class);
-        container.registerComponentImplementation(WFS.QUERYTYPE, QueryTypeBinding.class);
-        container.registerComponentImplementation(WFS.STATUSTYPE, StatusTypeBinding.class);
-        container.registerComponentImplementation(WFS.TRANSACTIONRESULTTYPE,
+        container.registerComponentImplementation(WFS_ISO.LOCKFEATURETYPE, LockFeatureTypeBinding.class);
+        container.registerComponentImplementation(WFS_ISO.LOCKTYPE, LockTypeBinding.class);
+        container.registerComponentImplementation(WFS_ISO.NATIVETYPE, NativeTypeBinding.class);
+        container.registerComponentImplementation(WFS_ISO.PROPERTYTYPE, PropertyTypeBinding.class);
+        container.registerComponentImplementation(WFS_ISO.QUERYTYPE, QueryTypeBinding.class);
+        container.registerComponentImplementation(WFS_ISO.STATUSTYPE, StatusTypeBinding.class);
+        container.registerComponentImplementation(WFS_ISO.TRANSACTIONRESULTTYPE,
             TransactionResultTypeBinding.class);
-        container.registerComponentImplementation(WFS.TRANSACTIONTYPE, TransactionTypeBinding.class);
-        container.registerComponentImplementation(WFS.UPDATEELEMENTTYPE,
+        container.registerComponentImplementation(WFS_ISO.TRANSACTIONTYPE, TransactionTypeBinding.class);
+        container.registerComponentImplementation(WFS_ISO.UPDATEELEMENTTYPE,
             UpdateElementTypeBinding.class);
-        container.registerComponentImplementation(WFS.WFS_LOCKFEATURERESPONSETYPE,
+        container.registerComponentImplementation(WFS_ISO.WFS_LOCKFEATURERESPONSETYPE,
             WFS_LockFeatureResponseTypeBinding.class);
-        container.registerComponentImplementation(WFS.WFS_TRANSACTIONRESPONSETYPE,
+        container.registerComponentImplementation(WFS_ISO.WFS_TRANSACTIONRESPONSETYPE,
             WFS_TransactionResponseTypeBinding.class);
     }
     
@@ -163,7 +163,7 @@ public class WFSConfiguration extends Configuration {
 
         context.registerComponentInstance(Ows10Factory.eINSTANCE);
         context.registerComponentInstance(WfsFactory.eINSTANCE);
-        context.registerComponentInstance(new WFSHandlerFactory(catalog, schemaBuilder));
+        context.registerComponentInstance(new ISOWFSHandlerFactory(catalog, schemaBuilder));
         context.registerComponentInstance(catalog);
         context.registerComponentImplementation(PropertyTypePropertyExtractor.class);
         
@@ -179,12 +179,12 @@ public class WFSConfiguration extends Configuration {
         bindings.put(GML.AbstractFeatureType,
             GMLAbstractFeatureTypeBinding.class);
         
-        WFSXmlUtils.registerAbstractGeometryTypeBinding(this, bindings, GML.AbstractGeometryType);
+        WFSXmlUtils_ISO.registerAbstractGeometryTypeBinding(this, bindings, GML.AbstractGeometryType);
         
         bindings.put(
                 GML.BoxType,
             new SetterInjectionComponentAdapter( 
-                GML.BoxType, GMLBoxTypeBinding.class, 
+                GML.BoxType, GMLBoxTypeBinding_ISO.class,
                 new Parameter[]{ new OptionalComponentParameter(CoordinateReferenceSystem.class)} 
             )
         );
