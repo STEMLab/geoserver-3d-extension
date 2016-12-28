@@ -61,7 +61,7 @@
       </property>
     </bean>
 
-	<bean id="wfsService-1.0.0" class="org.geoserver.platform.Service">
+	<bean id="wfsService-1.0.0-iso" class="org.geoserver.platform.Service">
 		<constructor-arg index="0" value="wfs3d"/>
 		<constructor-arg index="1" value="http://www.opengis.net/wfs"/>
 		<constructor-arg index="2" ref="wfsServiceISO"/>
@@ -78,7 +78,8 @@
 		</constructor-arg>
 	</bean>
 	
-	<bean id="wfsService-1.1.0" class="org.geoserver.platform.Service">
+	<!--
+	<bean id="wfsService-1.1.0-iso" class="org.geoserver.platform.Service">
 		<constructor-arg index="0" value="wfs3d"/>
 		<constructor-arg index="1" value="http://www.opengis.net/wfs"/>
 		<constructor-arg index="2" ref="wfsServiceISO"/>
@@ -96,7 +97,7 @@
         </constructor-arg>
 	</bean>
 	
-	<bean id="wfsService-2.0" class="org.geoserver.platform.Service">
+	<bean id="wfsService-2.0-iso" class="org.geoserver.platform.Service">
         <constructor-arg index="0" value="wfs3d"/>
         <constructor-arg index="1" value="http://www.opengis.net/wfs/2.0"/>
         <constructor-arg index="2" ref="wfsService20ISO"/>
@@ -117,10 +118,11 @@
           </list>
         </constructor-arg>
     </bean>
+    -->
 	
     <!-- 1.0 Transaction element handlers -->
   
-    <bean id="wfsFactoryExtension" class="org.geoserver.wfs.WFSFactoryExtension_ISO"/>
+    <bean id="wfsFactoryExtension-iso" class="org.geoserver.wfs.WFSFactoryExtension_ISO"/>
 	
 	<!-- http url mapping -->
 	<bean id="wfsURLMappingISO"
@@ -157,7 +159,7 @@
 	</bean>
 	<bean id="xmlConfiguration-1.0-iso" class="org.geoserver.wfs.xml.v1_0_0.WFSConfiguration_ISO" lazy-init="false">
 		<constructor-arg ref="catalog"/>
-		<constructor-arg ref="gml3SchemaBuilderISO"/>
+		<constructor-arg ref="gml2SchemaBuilderISO"/>
 		<constructor-arg ref="wfsXsd-1.0-iso"/>
 	</bean>
 	<alias name="xmlConfiguration-1.0-iso" alias="wfsXmlConfiguration-1.0-iso"/>
@@ -178,32 +180,33 @@
 		<constructor-arg index="1" ref="xmlConfiguration-1.0-iso"/>
 		<constructor-arg index="2" ref="geoServer"/>
 	</bean>
-	<bean id="wfsGetCapabilitiesXmlReader"
+	<bean id="wfsGetCapabilitiesXmlReaderISO"
 		class="org.geoserver.wfs.xml.v1_0_0.WfsXmlReader_ISO" parent="xmlReader-1.0.0-iso">
 		<constructor-arg value="GetCapabilities"/>
 	</bean>
-	<bean id="describeFetureTypeXmlReader"
+	<bean id="describeFetureTypeXmlReaderISO"
 		class="org.geoserver.wfs.xml.v1_0_0.WfsXmlReader_ISO" parent="xmlReader-1.0.0-iso">
 		<constructor-arg value="DescribeFeatureType"/>
 	</bean>
-	<bean id="getFeatureXmlReader" 
+	<bean id="getFeatureXmlReaderISO" 
 		class="org.geoserver.wfs.xml.v1_0_0.WfsXmlReader_ISO" parent="xmlReader-1.0.0-iso">
 		<constructor-arg value="GetFeature"/>
 	</bean>
-	<bean id="getFeatureWithLockXmlReader" 
+	<bean id="getFeatureWithLockXmlReaderISO" 
 		class="org.geoserver.wfs.xml.v1_0_0.WfsXmlReader_ISO" parent="xmlReader-1.0.0-iso">
 		<constructor-arg value="GetFeatureWithLock"/>
 	</bean>
-	<bean id="lockFeatureXmlReader" 
+	<bean id="lockFeatureXmlReaderISO" 
 		class="org.geoserver.wfs.xml.v1_0_0.WfsXmlReader_ISO" parent="xmlReader-1.0.0-iso">
 		<constructor-arg value="LockFeature"/>
 	</bean>
-	<bean id="transactionXmlReader" 
+	<bean id="transactionXmlReaderISO" 
 		class="org.geoserver.wfs.xml.v1_0_0.WfsXmlReader_ISO" parent="xmlReader-1.0.0-iso">
 		<constructor-arg value="Transaction"/>
 	</bean>
 	
 	<!-- 1.1 xml readers -->
+	<!--
 	<bean id="xmlReader-1.1.0-iso" class="org.geoserver.wfs.xml.v1_1_0.WfsXmlReader_ISO" abstract="true">
 		<constructor-arg ref="geoServer"/>
 		<constructor-arg ref="xmlConfiguration-1.1-iso"/>
@@ -229,23 +232,24 @@
 	<bean id="getGmlObjectXmlReader-1.1.0" parent="xmlReader-1.1.0-iso">
 	    <constructor-arg value="GetGmlObject"/>
 	</bean>
-	
+	-->
 	
 	<!-- default feature type encoders -->
-	<bean id="gml2FeatureTypeEncoder" 
+	<bean id="gml2FeatureTypeEncoderISO" 
 		class="org.geoserver.wfs.xml.v1_1_0.XmlSchemaEncoder_ISO$V10">
 		<constructor-arg ref="geoServer"/>
 	</bean>
-	<bean id="gml3FeatureTypeEncoder" 
+	<bean id="gml3FeatureTypeEncoderISO" 
 		class="org.geoserver.wfs.xml.v1_1_0.XmlSchemaEncoder_ISO$V11">
 		<constructor-arg ref="geoServer"/>
 	</bean>
-	<bean id="gml32FeatureTypeEncoder" 
+	<bean id="gml32FeatureTypeEncoderISO" 
         class="org.geoserver.wfs.xml.v1_1_0.XmlSchemaEncoder_ISO$V20">
         <constructor-arg ref="geoServer"/>
     </bean>
+    
 	<!-- default get feature producers -->
-	<bean id="gml2OutputFormat" 
+	<bean id="gml2OutputFormatISO" 
 		class="org.geoserver.wfs.xml.GML2OutputFormat_ISO" scope="prototype">
 		<constructor-arg ref="geoServer"/>
 	</bean>

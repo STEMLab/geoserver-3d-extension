@@ -9,11 +9,12 @@
 	
 	<modules>
 		<module>gs-wfs-iso</module>
+		<module>gs-main-iso</module>
 	</modules>
 	
 	 <properties>
-	  <gs.version>2.10-SNAPSHOT</gs.version>
-	  <gt.version>16-SNAPSHOT</gt.version>
+	  <gs.version>2.9-SNAPSHOT</gs.version>
+	  <gt.version>15-SNAPSHOT</gt.version>
 	  <gwc.version>1.10-SNAPSHOT</gwc.version>
 	  <spring.version>4.2.5.RELEASE</spring.version>
 	  <spring.security.version>4.0.4.RELEASE</spring.security.version> 

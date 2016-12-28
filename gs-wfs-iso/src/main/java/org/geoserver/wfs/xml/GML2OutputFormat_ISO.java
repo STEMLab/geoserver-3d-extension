@@ -99,7 +99,7 @@ public class GML2OutputFormat_ISO extends WFSGetFeatureOutputFormat {
      * using it.
      */
     public GML2OutputFormat_ISO(GeoServer geoServer) {
-        super(geoServer, new HashSet(Arrays.asList(new String[] { "GML2", MIME_TYPE })));
+        super(geoServer, new HashSet(Arrays.asList(new String[] { "GML2_ISO", MIME_TYPE })));
 
         this.geoServer = geoServer;
         this.catalog = geoServer.getCatalog();
@@ -111,7 +111,7 @@ public class GML2OutputFormat_ISO extends WFSGetFeatureOutputFormat {
     }
     
     public String getCapabilitiesElementName() {
-        return "GML2";
+        return "GML2_ISO";
     }
 
     /**

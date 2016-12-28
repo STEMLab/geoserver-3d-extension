@@ -951,7 +951,9 @@ public class GetFeature3D {
         } else {
             // Gentlemen, we can rebuild it. We have the technology!
             SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
-            filter = (Filter) filter.accept(visitor, null);
+            
+            //TODO you are defection in here
+            //filter = (Filter) filter.accept(visitor, null);
         }
         
         //figure out the crs the data is in
@@ -964,8 +966,10 @@ public class GetFeature3D {
         // the declared crs, and then reproject it to the native crs
         Filter transformedFilter = filter;
         if(declaredCRS != null)
-            transformedFilter = WFSReprojectionUtil.normalizeFilterCRS(filter, source.getSchema(), declaredCRS);
-
+        	//TODO you are defection in here
+            //transformedFilter = WFSReprojectionUtil.normalizeFilterCRS(filter, source.getSchema(), declaredCRS);
+        	;
+        	
         //only handle non-joins for now
         QName typeName = primaryTypeName;
         org.geotools.data.Query dataQuery = new org.geotools.data.Query(typeName.getLocalPart(), 
