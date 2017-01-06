@@ -8,8 +8,10 @@ package org.geoserver.wfs.xml.v2_0;
 import java.util.Map;
 
 import org.geotools.geometry.jts.CurvedGeometryFactory;
-import org.geotools.gml3.v3_2.GMLConfiguration_ISO;
+import org.geotools.gml3.iso.v3_2.GMLConfiguration_ISO;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.wfs.v2_0.WFS;
+import org.opengis.geometry.ISOGeometryBuilder;
 
 /**
  * Extend GeoTools WFSConfiguration to provide a custom binding class for GetFeatureType
@@ -19,11 +21,11 @@ public class WFSConfiguration_ISO extends org.geotools.wfs.v2_0.WFSConfiguration
     WFSConfiguration_ISO() {
         // OGC and OWS add two extra GML configurations in the mix, make sure to configure them
         // all with a geomtetry factory supporting curves
-        CurvedGeometryFactory gf = new CurvedGeometryFactory(Double.MAX_VALUE);
+        ISOGeometryBuilder gb = new ISOGeometryBuilder(DefaultGeographicCRS.WGS84_3D);
         for (Object configuration : allDependencies()) {
             if (configuration instanceof GMLConfiguration_ISO) {
                 GMLConfiguration_ISO gml = (GMLConfiguration_ISO) configuration;
-                gml.setGeometryFactory(gf);
+                gml.setGeometryFactory(gb);
             }
         }
     }

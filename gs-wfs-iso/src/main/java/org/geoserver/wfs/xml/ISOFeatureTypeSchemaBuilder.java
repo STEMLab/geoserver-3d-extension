@@ -5,9 +5,9 @@
  */
 package org.geoserver.wfs.xml;
 
-import static org.geoserver.ows.util.ResponseUtils.*;
+import static org.geoserver.ows.util.ResponseUtils.buildURL;
+import static org.geoserver.ows.util.ResponseUtils.params;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,8 +21,6 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import com.google.common.collect.Lists;
 
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDCompositor;
@@ -932,7 +930,7 @@ public abstract class ISOFeatureTypeSchemaBuilder {
                     "service", "WFS3D");
 
             gmlPrefix = "gml";
-            xmlConfiguration = new org.geotools.gml3.GMLConfiguration_ISO();
+            xmlConfiguration = new org.geotools.gml3.iso.GMLConfiguration_ISO();
         }
 
         Object createTypeMappingProfile() {
@@ -981,7 +979,7 @@ public abstract class ISOFeatureTypeSchemaBuilder {
                     "version", "2.0.0",
                     "service", "WFS3D", 
                     "outputFormat", "text/xml; subtype=gml/3.2");
-            xmlConfiguration = new org.geotools.gml3.v3_2.GMLConfiguration_ISO();
+            xmlConfiguration = new org.geotools.gml3.iso.v3_2.GMLConfiguration_ISO();
         }
 
         @Override

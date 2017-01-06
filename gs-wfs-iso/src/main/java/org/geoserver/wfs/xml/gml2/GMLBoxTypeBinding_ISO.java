@@ -7,13 +7,13 @@ package org.geoserver.wfs.xml.gml2;
 
 import java.net.URI;
 
-import org.geotools.geometry.GeometryBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 import org.opengis.geometry.Envelope;
+import org.opengis.geometry.ISOGeometryBuilder;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -24,13 +24,13 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 public class GMLBoxTypeBinding_ISO extends org.geotools.gml2.iso.bindings.GMLBoxTypeBinding {
 
-    public GMLBoxTypeBinding_ISO(GeometryBuilder gBuilder) {
+    public GMLBoxTypeBinding_ISO(ISOGeometryBuilder gBuilder) {
 		super(gBuilder);
 		// TODO Auto-generated constructor stub
 	}
     
     public GMLBoxTypeBinding_ISO() {
-		super(new GeometryBuilder(DefaultGeographicCRS.WGS84_3D));
+		super(new ISOGeometryBuilder(DefaultGeographicCRS.WGS84_3D));
 		// TODO Auto-generated constructor stub
 	}
 

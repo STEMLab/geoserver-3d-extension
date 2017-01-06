@@ -49,6 +49,7 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.SchemaException;
 import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.ISOFilterFactoryImpl;
 import org.geotools.filter.expression.AbstractExpressionVisitor;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.filter.v2_0.FESConfiguration;
@@ -587,7 +588,7 @@ public class GetFeature3D {
                         j++;
                     }
                     SimpleFeatureType targetType = ISODataUtilities.createSubType((SimpleFeatureType) features.getSchema(), residualNames);
-                    features = new FeatureBoundsFeatureCollection((SimpleFeatureCollection) features, targetType);
+                    features = new ISOFeatureBoundsFeatureCollection((SimpleFeatureCollection) features, targetType);
                 }
 
                 //JD: TODO reoptimize
@@ -953,22 +954,20 @@ public class GetFeature3D {
             SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
             
             //TODO you are defection in here
-            //filter = (Filter) filter.accept(visitor, null);
+            filter = (Filter) filter.accept(visitor, new ISOFilterFactoryImpl());
         }
         
         //figure out the crs the data is in
         CoordinateReferenceSystem crs = source.getSchema().getCoordinateReferenceSystem();
             
         // gather declared CRS
-        CoordinateReferenceSystem declaredCRS = WFSReprojectionUtil.getDeclaredCrs(crs, wfsVersion);
+        CoordinateReferenceSystem declaredCRS = WFSReprojectionUtil_ISO.getDeclaredCrs(crs, wfsVersion);
         
         // make sure every bbox and geometry that does not have an attached crs will use
         // the declared crs, and then reproject it to the native crs
         Filter transformedFilter = filter;
         if(declaredCRS != null)
-        	//TODO you are defection in here
-            //transformedFilter = WFSReprojectionUtil.normalizeFilterCRS(filter, source.getSchema(), declaredCRS);
-        	;
+            transformedFilter = WFSReprojectionUtil_ISO.normalizeFilterCRS(filter, source.getSchema(), declaredCRS);
         	
         //only handle non-joins for now
         QName typeName = primaryTypeName;

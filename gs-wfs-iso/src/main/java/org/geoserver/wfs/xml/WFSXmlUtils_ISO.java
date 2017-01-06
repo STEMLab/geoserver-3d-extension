@@ -146,8 +146,8 @@ public class WFSXmlUtils_ISO {
             if (dep instanceof org.geotools.gml2.iso.GMLConfiguration_ISO) {
                 return ((org.geotools.gml2.iso.GMLConfiguration_ISO) dep).getSrsSyntax();
             }
-            if (dep instanceof org.geotools.gml3.GMLConfiguration_ISO) {
-                return ((org.geotools.gml3.GMLConfiguration_ISO) dep).getSrsSyntax();
+            if (dep instanceof org.geotools.gml3.iso.GMLConfiguration_ISO) {
+                return ((org.geotools.gml3.iso.GMLConfiguration_ISO) dep).getSrsSyntax();
             }
         }
         return null;
@@ -158,8 +158,8 @@ public class WFSXmlUtils_ISO {
             if (dep instanceof org.geotools.gml2.iso.GMLConfiguration_ISO) {
                 ((org.geotools.gml2.iso.GMLConfiguration_ISO) dep).setSrsSyntax(srsSyntax);
             }
-            if (dep instanceof org.geotools.gml3.GMLConfiguration_ISO) {
-                ((org.geotools.gml3.GMLConfiguration_ISO) dep).setSrsSyntax(srsSyntax);
+            if (dep instanceof org.geotools.gml3.iso.GMLConfiguration_ISO) {
+                ((org.geotools.gml3.iso.GMLConfiguration_ISO) dep).setSrsSyntax(srsSyntax);
             }
         }
     }

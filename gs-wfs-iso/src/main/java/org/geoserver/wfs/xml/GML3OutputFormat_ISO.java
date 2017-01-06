@@ -39,8 +39,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import net.opengis.wfs.FeatureCollectionType;
-
 import org.geoserver.catalog.Catalog;
 import org.geoserver.catalog.FeatureTypeInfo;
 import org.geoserver.catalog.ResourceInfo;
@@ -54,18 +52,19 @@ import org.geoserver.wfs.WFSInfo;
 import org.geoserver.wfs.request.FeatureCollectionResponse;
 import org.geoserver.wfs.request.GetFeatureRequest;
 import org.geoserver.wfs.request.Query;
-import org.geoserver.wfs.xml.v1_1_0.WFS;
 import org.geoserver.wfs.xml.v1_1_0.WFSConfiguration_ISO;
 import org.geoserver.wfs.xml.v1_1_0.WFS_ISO;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeImpl;
-import org.geotools.gml3.GMLConfiguration_ISO;
+import org.geotools.gml3.iso.GMLConfiguration_ISO;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.Encoder;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 import org.w3c.dom.Document;
+
+import net.opengis.wfs.FeatureCollectionType;
 
 public class GML3OutputFormat_ISO extends WFSGetFeatureOutputFormat {
     
