@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ Copyright (C) 2014 - 2016 Open Source Geospatial Foundation. All rights reserved.
+ This code is licensed under the GPL 2.0 license, available at the root
+ application directory.
+ -->
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+  <bean class="org.geoserver.platform.ModuleStatusImpl">
+    <constructor-arg index="0" value="gs-web-iso"/>
+    <constructor-arg index="1" value="GeoServer Web UI for ISO Extension"/>
+  </bean>
+  
+  <!-- Core web app setup -->
+  <!-- <bean id="webApplication" class="org.geoserver.web.GeoServerApplication">
+  </bean> -->
+  
+  <bean id="data3dCategory" class="org.geoserver.web.Category">
+    <property name="nameKey" value="category.data3d" />
+  </bean>
+  
+  <bean id="store3dMenuPage" class="org.geoserver.web.MenuPageInfo">
+    <property name="id" value="stores3d" />
+    <property name="titleKey" value="ISOStorePage.title" />
+    <property name="descriptionKey" value="ISOStorePage.description" />
+    <property name="category" ref="data3dCategory" />
+    <property name="icon" value="../../img/icons/silk/database.png" />
+    <property name="componentClass" value="org.geoserver.web.data.store.ISOStorePage" />
+    <property name="authorizer" ref="workspaceAdminAuthorizer"/>
+  </bean>
+  
+</beans>

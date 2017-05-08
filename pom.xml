@@ -10,6 +10,7 @@
 	<modules>
 		<module>gs-wfs-iso</module>
 		<module>gs-main-iso</module>
+		<module>gs-web-iso</module>
 	</modules>
 	
 	 <properties>
@@ -91,4 +92,24 @@
      </releases>
     </repository>
  </repositories>
+
+ <build>
+	<plugins>
+		<!-- compilation -->
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>2.3.2</version>
+			<configuration>
+				<source>1.8</source>
+				<target>1.8</target>
+				<debug>true</debug>
+				<encoding>UTF-8</encoding>
+				<fork>${fork.javac}</fork>
+				<maxmem>${javac.maxHeapSize}</maxmem>
+			</configuration>
+		</plugin>
+	</plugins>
+ </build>
+ 
 </project>

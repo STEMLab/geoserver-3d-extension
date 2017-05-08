@@ -30,8 +30,6 @@
 		<property name="filterFactory" ref="filterFactory3d"/>
 	</bean>
 
-
-
     <bean id="wfsLogger" class="org.geoserver.ows.util.EMFLogger">
       <constructor-arg type="java.lang.String" value="org.geoserver.wfs"/>
     </bean>
@@ -138,8 +136,8 @@
 	
 		<property name="mappings">
 			<props>
-				<prop key="/wfs3d">dispatcher</prop>
-				<prop key="/wfs3d/*">dispatcher</prop>
+				<prop key="/3dwfs">dispatcher</prop>
+				<prop key="/3dwfs/*">dispatcher</prop>
 				<prop key="/TestWfsPost">wfsTestServlet</prop>
 			</props>
 		</property>
