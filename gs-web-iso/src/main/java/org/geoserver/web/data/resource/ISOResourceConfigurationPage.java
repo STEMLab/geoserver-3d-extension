@@ -24,7 +24,7 @@ import org.geoserver.catalog.LayerInfo;
 import org.geoserver.catalog.NamespaceInfo;
 import org.geoserver.catalog.ProjectionPolicy;
 import org.geoserver.catalog.ResourceInfo;
-import org.geoserver.web.data.layer.LayerPage;
+import org.geoserver.web.data.layer.ISOLayerPage;
 import org.geoserver.web.publish.PublishedConfigurationPage;
 import org.geoserver.web.publish.PublishedConfigurationPanel;
 import org.geoserver.web.publish.PublishedEditTabPanel;
@@ -59,7 +59,7 @@ public class ISOResourceConfigurationPage extends PublishedConfigurationPage<Lay
 
     public ISOResourceConfigurationPage(String workspaceName, String layerName) {
         super(false);
-        this.returnPageClass = LayerPage.class;
+        this.returnPageClass = ISOLayerPage.class;
         LayerInfo layer;
         if (workspaceName != null) {
             NamespaceInfo ns = getCatalog().getNamespaceByPrefix(workspaceName);
@@ -87,14 +87,14 @@ public class ISOResourceConfigurationPage extends PublishedConfigurationPage<Lay
 
     public ISOResourceConfigurationPage(ResourceInfo info, boolean isNew) {
         super(isNew);
-        this.returnPageClass = LayerPage.class;
+        this.returnPageClass = ISOLayerPage.class;
         setupPublished(getCatalog().getLayers(info).get(0));
         setupResource(info);
     }
 
     public ISOResourceConfigurationPage(LayerInfo info, boolean isNew) {
         super(info, isNew);
-        this.returnPageClass = LayerPage.class;
+        this.returnPageClass = ISOLayerPage.class;
         setupResource(isNew ? info.getResource() : getCatalog().getResource(info.getResource().getId(), ResourceInfo.class));
     }
 

@@ -32,7 +32,7 @@ public class ISOStorePage extends GeoServerSecuredPage {
 
     public ISOStorePage() {
         // the table, and wire up selection change
-        table = new ISOStorePanel("table2", provider, true) {
+        table = new ISOStorePanel("table", provider, true) {
             @Override
             protected void onSelectionUpdate(AjaxRequestTarget target) {
                 removal.setEnabled(table.getSelection().size() > 0);
@@ -43,18 +43,18 @@ public class ISOStorePage extends GeoServerSecuredPage {
         add(table);
         
         // the confirm dialog
-        add(dialog = new GeoServerDialog("dialog2"));
+        add(dialog = new GeoServerDialog("dialog"));
         setHeaderPanel(headerPanel());
     }
     
     protected Component headerPanel() {
-        Fragment header = new Fragment(HEADER_PANEL, "header2", this);
+        Fragment header = new Fragment(HEADER_PANEL, "header", this);
         
         // the add button
-        header.add(new BookmarkablePageLink("addNew2", ISONewDataPage.class));
+        header.add(new BookmarkablePageLink("addNew", ISONewDataPage.class));
         
         // the removal button
-        header.add(removal = new SelectionRemovalLink("removeSelected2", table, dialog));
+        header.add(removal = new SelectionRemovalLink("removeSelected", table, dialog));
         removal.setOutputMarkupId(true);
         removal.setEnabled(false);
         

@@ -30,4 +30,14 @@
     <property name="authorizer" ref="workspaceAdminAuthorizer"/>
   </bean>
   
+  <bean id="layer3dMenuPage" class="org.geoserver.web.MenuPageInfo">
+    <property name="id" value="layers3d" />
+    <property name="titleKey" value="ISOLayerPage.title" />
+    <property name="descriptionKey" value="ISOLayerPage.description" />
+    <property name="componentClass" value="org.geoserver.web.data.layer.ISOLayerPage" />
+    <property name="category" ref="data3dCategory" />
+    <property name="icon" value="../../img/icons/silk/picture_empty.png" />
+    <property name="authorizer" ref="workspaceAdminAuthorizer"/>
+  </bean>
+  
 </beans>
