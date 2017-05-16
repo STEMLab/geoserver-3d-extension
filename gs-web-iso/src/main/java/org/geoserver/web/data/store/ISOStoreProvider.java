@@ -21,7 +21,7 @@ import org.geoserver.catalog.Catalog;
 import org.geoserver.catalog.CoverageStoreInfo;
 import org.geoserver.catalog.DataStoreInfo;
 import org.geoserver.catalog.Predicates;
-import org.geoserver.catalog.ResourcePool;
+import org.geoserver.catalog.ISOResourcePool;
 import org.geoserver.catalog.StoreInfo;
 import org.geoserver.catalog.WorkspaceInfo;
 import org.geoserver.catalog.util.CloseableIterator;
@@ -78,7 +78,7 @@ public class ISOStoreProvider extends GeoServerDataProvider<StoreInfo> {
                 return type;
             }
             try {
-                ResourcePool resourcePool = getCatalog().getResourcePool();
+                ISOResourcePool resourcePool = getCatalog().getResourcePool();
                 if(item instanceof DataStoreInfo) {
                     DataStoreInfo dsInfo = (DataStoreInfo) item;
                     DataAccessFactory factory = resourcePool.getDataStoreFactory(dsInfo);

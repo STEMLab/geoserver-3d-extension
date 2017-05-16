@@ -60,7 +60,7 @@ public class WFSConfiguration_ISO extends Configuration {
     /**
      * logger
      */
-    static Logger LOGGER = Logging.getLogger( "org.geoserver.wfs");
+    static Logger LOGGER = Logging.getLogger("org.geoserver.wfs");
     
     /**
      * catalog
@@ -249,7 +249,7 @@ public class WFSConfiguration_ISO extends Configuration {
         //seed the cache with entries from the catalog
         context.registerComponentInstance(FeatureTypeCache.class, new CatalogFeatureTypeCache(getCatalog()));
 
-        context.registerComponentInstance(new CurvedGeometryFactory(Double.MAX_VALUE));
+        //context.registerComponentInstance(new CurvedGeometryFactory(Double.MAX_VALUE));
 
     }
 

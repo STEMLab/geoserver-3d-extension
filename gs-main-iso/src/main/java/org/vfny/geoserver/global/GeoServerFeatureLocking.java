@@ -35,7 +35,7 @@ import org.opengis.filter.Filter;
  * @author Gabriel Roldan
  * @version $Id$
  */
-public class GeoServerFeatureLocking extends GeoServerFeatureStore implements SimpleFeatureLocking {
+public class GeoServerFeatureLocking extends ISOGeoServerFeatureStore implements SimpleFeatureLocking {
     /**
      * Creates a new DEFQueryFeatureLocking object.
      *
@@ -59,7 +59,7 @@ public class GeoServerFeatureLocking extends GeoServerFeatureStore implements Si
      *
      * @throws UnsupportedOperationException DOCUMENT ME!
      *
-     * @see org.vfny.geoserver.global.GeoServerFeatureStore#setFeatureLock(org.geotools.data.FeatureLock)
+     * @see org.vfny.geoserver.global.ISOGeoServerFeatureStore#setFeatureLock(org.geotools.data.FeatureLock)
      */
     public void setFeatureLock(FeatureLock lock) {
         if (source instanceof FeatureLocking) {

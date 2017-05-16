@@ -107,8 +107,8 @@ public class XmlSchemaEncoder_ISO extends WFSDescribeFeatureTypeOutputFormat_ISO
     public static class V20 extends XmlSchemaEncoder_ISO {
         static Set<String> MIME_TYPES = new LinkedHashSet<String>();
         static {
-            MIME_TYPES.add("text/xml; subtype=gml/3.2");
-            MIME_TYPES.add("application/gml+xml; version=3.2");
+            MIME_TYPES.add("text/xml; subtype=gml3d/3.2");
+            MIME_TYPES.add("application/gml3d+xml; version=3.2");
         }
         public V20(GeoServer gs) {
             super(MIME_TYPES, gs, new ISOFeatureTypeSchemaBuilder.GML32(gs));
@@ -123,7 +123,7 @@ public class XmlSchemaEncoder_ISO extends WFSDescribeFeatureTypeOutputFormat_ISO
     public static class V11 extends XmlSchemaEncoder_ISO {
 
         public V11(GeoServer gs) {
-            super("text/xml; subtype=gml/3.1.1",gs,new ISOFeatureTypeSchemaBuilder.GML3(gs));
+            super("text/xml; subtype=gml3d/3.1.1",gs,new ISOFeatureTypeSchemaBuilder.GML3(gs));
         }
         
     }

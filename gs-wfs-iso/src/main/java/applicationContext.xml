@@ -11,6 +11,7 @@
       <constructor-arg index="0" value="gs-wfs-iso"/>
       <constructor-arg index="1" value="GeoServer Web Feature Service for 3D"/>
     </bean>
+    
 	<bean id="wfsLegacyLoader" class="org.geoserver.wfs.WFSLoader_ISO"/>
 	<bean id="wfsLoader" class="org.geoserver.wfs.WFSXStreamLoader_ISO">
 	  <constructor-arg ref="resourceLoader"/>
@@ -76,7 +77,6 @@
 		</constructor-arg>
 	</bean>
 	
-	<!--
 	<bean id="wfsService-1.1.0-iso" class="org.geoserver.platform.Service">
 		<constructor-arg index="0" value="wfs3d"/>
 		<constructor-arg index="1" value="http://www.opengis.net/wfs"/>
@@ -95,6 +95,7 @@
         </constructor-arg>
 	</bean>
 	
+	<!--
 	<bean id="wfsService-2.0-iso" class="org.geoserver.platform.Service">
         <constructor-arg index="0" value="wfs3d"/>
         <constructor-arg index="1" value="http://www.opengis.net/wfs/2.0"/>
@@ -116,7 +117,7 @@
           </list>
         </constructor-arg>
     </bean>
-    -->
+	-->
 	
     <!-- 1.0 Transaction element handlers -->
   
@@ -136,8 +137,8 @@
 	
 		<property name="mappings">
 			<props>
-				<prop key="/3dwfs">dispatcher</prop>
-				<prop key="/3dwfs/*">dispatcher</prop>
+				<prop key="/wfs">dispatcher</prop>
+				<prop key="/wfs/*">dispatcher</prop>
 				<prop key="/TestWfsPost">wfsTestServlet</prop>
 			</props>
 		</property>
@@ -204,7 +205,6 @@
 	</bean>
 	
 	<!-- 1.1 xml readers -->
-	<!--
 	<bean id="xmlReader-1.1.0-iso" class="org.geoserver.wfs.xml.v1_1_0.WfsXmlReader_ISO" abstract="true">
 		<constructor-arg ref="geoServer"/>
 		<constructor-arg ref="xmlConfiguration-1.1-iso"/>
@@ -230,7 +230,6 @@
 	<bean id="getGmlObjectXmlReader-1.1.0" parent="xmlReader-1.1.0-iso">
 	    <constructor-arg value="GetGmlObject"/>
 	</bean>
-	-->
 	
 	<!-- default feature type encoders -->
 	<bean id="gml2FeatureTypeEncoderISO" 
@@ -247,9 +246,9 @@
     </bean>
     
 	<!-- default get feature producers -->
-	<bean id="gml2OutputFormatISO" 
-		class="org.geoserver.wfs.xml.GML2OutputFormat_ISO" scope="prototype">
+	<bean id="gml3OutputFormatISO" class="org.geoserver.wfs.xml.GML3OutputFormat_ISO"> 
 		<constructor-arg ref="geoServer"/>
+		<constructor-arg ref="xmlConfiguration-1.1-iso"/>
 	</bean>
 	
 </beans>

@@ -18,24 +18,24 @@ import org.geoserver.catalog.MetadataMap;
 import org.geoserver.catalog.ProjectionPolicy;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStore;
-import org.geotools.data.ISODataUtilities;
 import org.geotools.data.FeatureListener;
 import org.geotools.data.FeatureLocking;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureStore;
+import org.geotools.data.ISODataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.crs.ISOForceCoordinateSystemFeatureResults;
-import org.geotools.data.crs.ReprojectFeatureResults;
+import org.geotools.data.crs.ISOReprojectFeatureResults;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.Hints;
 import org.geotools.factory.Hints.ConfigurationMetadataKey;
-import org.geotools.feature.FeatureTypes;
+import org.geotools.feature.ISOFeatureTypes;
 import org.geotools.feature.SchemaException;
-import org.geotools.feature.collection.MaxSimpleFeatureCollection;
-import org.geotools.feature.collection.SortedSimpleFeatureCollection;
+import org.geotools.feature.collection.ISOMaxSimpleFeatureCollection;
+import org.geotools.feature.collection.ISOSortedSimpleFeatureCollection;
 import org.geotools.filter.ISOFilterFactoryImpl;
 import org.geotools.filter.spatial.ISODefaultCRSFilterVisitor;
 import org.geotools.filter.spatial.ISOReprojectingFilterVisitor;
@@ -202,7 +202,7 @@ public class ISOGeoServerFeatureSource implements SimpleFeatureSource {
             return new GeoServerFeatureLocking(
                     (FeatureLocking<SimpleFeatureType, SimpleFeature>) featureSource, settings);
         } else if (featureSource instanceof FeatureStore) {
-            return new GeoServerFeatureStore(
+            return new ISOGeoServerFeatureStore(
                     (FeatureStore<SimpleFeatureType, SimpleFeature>) featureSource, settings);
         }
 
@@ -459,12 +459,12 @@ public class ISOGeoServerFeatureSource implements SimpleFeatureSource {
             
             // apply sorting if necessary
             if(sortBy != null) {
-                fc = new SortedSimpleFeatureCollection(fc, sortBy);
+                fc = new ISOSortedSimpleFeatureCollection(fc, sortBy);
             }
             
             //apply limit offset if necessary
             if (offset != null || maxFeatures != null) {
-                fc = new MaxSimpleFeatureCollection(fc, offset == null ? 0 : offset, 
+                fc = new ISOMaxSimpleFeatureCollection(fc, offset == null ? 0 : offset, 
                         maxFeatures == null ? Integer.MAX_VALUE : maxFeatures);
             }
             
@@ -494,7 +494,7 @@ public class ISOGeoServerFeatureSource implements SimpleFeatureSource {
             if(srsHandling == ProjectionPolicy.FORCE_DECLARED) {
                 defaultCRS = declaredCRS;
                 targetCRS = declaredCRS;
-                nativeFeatureType = FeatureTypes.transform(nativeFeatureType, declaredCRS);
+                nativeFeatureType = ISOFeatureTypes.transform(nativeFeatureType, declaredCRS);
             } else if(srsHandling == ProjectionPolicy.REPROJECT_TO_DECLARED) {
                 defaultCRS = declaredCRS;
                 targetCRS = nativeCRS;
@@ -546,7 +546,7 @@ public class ISOGeoServerFeatureSource implements SimpleFeatureSource {
             nativeCRS = declaredCRS;
         } else if(srsHandling == ProjectionPolicy.REPROJECT_TO_DECLARED && targetCRS == null
                 && !nativeCRS.equals(declaredCRS)) {
-            fc = new ReprojectFeatureResults(fc,declaredCRS);
+            fc = new ISOReprojectFeatureResults(fc,declaredCRS);
         }
 
         
@@ -557,12 +557,12 @@ public class ISOGeoServerFeatureSource implements SimpleFeatureSource {
                 //we do not know what the native crs which means we can 
                 // not be sure if we should reproject or not... so we go 
                 // ahead and reproject regardless
-                fc = new ReprojectFeatureResults(fc,targetCRS);
+                fc = new ISOReprojectFeatureResults(fc,targetCRS);
             }
             else {
                 //only reproject if native != target
                 if (!CRS.equalsIgnoreMetadata(nativeCRS, targetCRS)) {
-                    fc = new ReprojectFeatureResults(fc,targetCRS);                        
+                    fc = new ISOReprojectFeatureResults(fc,targetCRS);                        
                 }
             }
         }
