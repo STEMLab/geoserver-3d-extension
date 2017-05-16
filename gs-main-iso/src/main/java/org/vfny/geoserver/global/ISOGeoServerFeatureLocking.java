@@ -35,14 +35,14 @@ import org.opengis.filter.Filter;
  * @author Gabriel Roldan
  * @version $Id$
  */
-public class GeoServerFeatureLocking extends ISOGeoServerFeatureStore implements SimpleFeatureLocking {
+public class ISOGeoServerFeatureLocking extends ISOGeoServerFeatureStore implements SimpleFeatureLocking {
     /**
      * Creates a new DEFQueryFeatureLocking object.
      *
      * @param locking GeoTools2 FeatureSource
      * @param settings Settings for this store
      */
-    GeoServerFeatureLocking(FeatureLocking<SimpleFeatureType, SimpleFeature> locking, Settings settings) {
+    ISOGeoServerFeatureLocking(FeatureLocking<SimpleFeatureType, SimpleFeature> locking, Settings settings) {
         super(locking, settings);
     }
 

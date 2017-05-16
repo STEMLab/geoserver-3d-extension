@@ -11,8 +11,8 @@ import java.util.Set;
 
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.ProfileImpl;
-import org.geotools.gml3.GML;
-import org.geotools.gml3.GMLSchema;
+import org.geotools.gml3.iso.GML;
+import org.geotools.gml3.iso.GMLSchema;
 
 
 public class GML3Profile_ISO extends TypeMappingProfile {
@@ -53,7 +53,9 @@ public class GML3Profile_ISO extends TypeMappingProfile {
         profile.add(new NameImpl(GML.NAMESPACE, GML.PolygonPropertyType.getLocalPart()));
         //profile.add( new NameImpl(  GML.NAMESPACE, GML.MultiPolygonType.getLocalPart() ) );
         profile.add(new NameImpl(GML.NAMESPACE, GML.MultiPolygonPropertyType.getLocalPart()));
-
+        
+        //profile.add( new NameImpl(  GML.NAMESPACE, GML.SolidType.getLocalPart() ) );
+        profile.add(new NameImpl(GML.NAMESPACE, GML.SolidPropertyType.getLocalPart()));
 
         //profile.add( new NameImpl(  GML.NAMESPACE, GML.AbstractGeometryType.getLocalPart() ) );
         profile.add(new NameImpl(GML.NAMESPACE, GML.GeometryPropertyType.getLocalPart()));

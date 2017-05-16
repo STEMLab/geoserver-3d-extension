@@ -121,7 +121,7 @@ import org.opengis.referencing.crs.SingleCRS;
 import org.opengis.referencing.cs.CoordinateSystem;
 import org.opengis.referencing.operation.TransformException;
 import org.springframework.context.ApplicationContext;
-import org.vfny.geoserver.global.GeoServerFeatureLocking;
+import org.vfny.geoserver.global.ISOGeoServerFeatureLocking;
 import org.vfny.geoserver.util.DataStoreUtils;
 import org.xml.sax.EntityResolver;
 
@@ -307,68 +307,7 @@ public class ISOResourcePool extends ResourcePool {
             }
         }
     }
-        
-    /**
-     * Process conneciton parameters into a synchronized map.
-     *
-     * <p>
-     * This is used to smooth any relative path kind of issues for any file
-     * URLS or directory. This code should be expanded to deal with any other context
-     * sensitve isses data stores tend to have.
-     * </p>
-     * <ul>
-     * <li>key ends in URL, and value is a string</li>
-     * <li>value is a URL</li>
-     * <li>key is directory, and value is a string</li>
-     * </ul>
-     * 
-     * @return Processed parameters with relative file URLs resolved
-     * @param m
-     * @param baseDir Base directory used to resolve relative file URLs
-     * @task REVISIT: cache these?
-     */
-    public static <K,V> Map<K,V> getParams(Map<K,V> m, GeoServerResourceLoader loader) {
-        @SuppressWarnings("unchecked")
-        Map<K,V> params = Collections.synchronizedMap(new HashMap<K,V>(m));
-        
-        final GeoServerEnvironment gsEnvironment = GeoServerExtensions.bean(GeoServerEnvironment.class);
-        
-        for (Entry<K,V> entry : params.entrySet()) {
-            String key = (String) entry.getKey();
-            Object value = entry.getValue();
-            
-            if (gsEnvironment != null && GeoServerEnvironment.ALLOW_ENV_PARAMETRIZATION) {
-                value = gsEnvironment.resolveValue(value);
-            }
 
-            //TODO: this code is a pretty big hack, using the name to 
-            // determine if the key is a url, could be named something else
-            // and still be a url
-            if ((key != null) && key.matches(".* *url") && value instanceof String) {
-                String path = (String) value;
-
-                if (path.startsWith("file:")) {
-                    File fixedPath = loader.url(path);
-                    URL url = DataUtilities.fileToURL(fixedPath);
-                    entry.setValue( (V) url.toExternalForm());
-                }
-            } else if (value instanceof URL && ((URL) value).getProtocol().equals("file")) {
-                URL url = (URL) value;
-                File fixedPath = loader.url( url.toString() );
-                entry.setValue( (V) DataUtilities.fileToURL(fixedPath));
-            } else if ((key != null) && key.equals("directory") && value instanceof String) {
-                String path = (String) value;
-                //if a url is used for a directory (for example property store), convert it to path
-                
-                if (path.startsWith("file:")) {
-                    File fixedPath = loader.url(path);
-                    entry.setValue( (V) fixedPath.toString() );            
-                }
-            }
-        }
-        return params;
-    }
-    
     /**
      * Clears the cached resource for a data store.
      * 
@@ -947,7 +886,7 @@ public class ISOResourcePool extends ResourcePool {
             }
 
             //return a normal 
-            return GeoServerFeatureLocking.create(fs, schema, info.filter(), resultCRS, info
+            return ISOGeoServerFeatureLocking.create(fs, schema, info.filter(), resultCRS, info
                     .getProjectionPolicy().getCode(), getTolerance(info), info.getMetadata());
         }
     }

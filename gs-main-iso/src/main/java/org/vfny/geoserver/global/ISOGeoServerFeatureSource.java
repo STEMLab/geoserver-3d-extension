@@ -199,7 +199,7 @@ public class ISOGeoServerFeatureSource implements SimpleFeatureSource {
      */
     public static ISOGeoServerFeatureSource create(FeatureSource <SimpleFeatureType, SimpleFeature> featureSource, Settings settings) {
         if (featureSource instanceof FeatureLocking) {
-            return new GeoServerFeatureLocking(
+            return new ISOGeoServerFeatureLocking(
                     (FeatureLocking<SimpleFeatureType, SimpleFeature>) featureSource, settings);
         } else if (featureSource instanceof FeatureStore) {
             return new ISOGeoServerFeatureStore(
