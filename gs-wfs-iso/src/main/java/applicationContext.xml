@@ -137,8 +137,8 @@
 	
 		<property name="mappings">
 			<props>
-				<prop key="/wfs">dispatcher</prop>
-				<prop key="/wfs/*">dispatcher</prop>
+				<prop key="/3dwfs">dispatcher</prop>
+				<prop key="/3dwfs/*">dispatcher</prop>
 				<prop key="/TestWfsPost">wfsTestServlet</prop>
 			</props>
 		</property>
@@ -167,7 +167,7 @@
         <constructor-arg ref="gml3SchemaBuilderISO"/>
     </bean>
 	<bean id="xmlConfiguration-1.1-iso" class="org.geoserver.wfs.xml.v1_1_0.WFSConfiguration_ISO" lazy-init="false">
-		<constructor-arg ref="geoServer"/>
+		<constructor-arg ref="catalog"/>
 		<constructor-arg ref="gml3SchemaBuilderISO"/>
 		<constructor-arg ref="wfsXsd-1.1-iso"/>
 	</bean>

@@ -72,10 +72,10 @@ public class WFSConfiguration_ISO extends Configuration {
      */
     protected ISOFeatureTypeSchemaBuilder schemaBuilder;
 
-    public WFSConfiguration_ISO(GeoServer geoServer, ISOFeatureTypeSchemaBuilder schemaBuilder, final WFS_ISO wfs) {
+    public WFSConfiguration_ISO(Catalog catalog, ISOFeatureTypeSchemaBuilder schemaBuilder, final WFS_ISO wfs) {
         super( wfs );
 
-        this.catalog = geoServer.getCatalog();
+        this.catalog = catalog;
         this.schemaBuilder = schemaBuilder;
         
         catalog.addListener(new CatalogListener() {
@@ -117,7 +117,21 @@ public class WFSConfiguration_ISO extends Configuration {
                 wfs.dispose();
             }
         });
-        geoServer.addListener(new ConfigurationListenerAdapter() {
+        
+        catalog.getResourcePool().addListener(new ResourcePool.Listener() {
+            
+            public void disposed(FeatureTypeInfo featureType, FeatureType ft) {
+            }
+            
+            public void disposed(CoverageStoreInfo coverageStore, GridCoverageReader gcr) {
+            }
+            
+            public void disposed(DataStoreInfo dataStore, DataAccess da) {
+                wfs.dispose();
+            }
+        });
+        
+       /*geoServer.addListener(new ConfigurationListenerAdapter() {
             
             public void reloaded() {
                 wfs.dispose();
@@ -129,7 +143,7 @@ public class WFSConfiguration_ISO extends Configuration {
                     reloaded();
                 }
             }
-        });
+        });*/
         addDependency(new OGCConfiguration_ISO());
         addDependency(new OWSConfiguration());
         addDependency(new GMLConfiguration_ISO());
@@ -165,7 +179,7 @@ public class WFSConfiguration_ISO extends Configuration {
         container.registerComponentImplementation(WFS_ISO.DESCRIBEFEATURETYPETYPE,
             DescribeFeatureTypeTypeBinding.class);
         container.registerComponentImplementation(WFS_ISO.FEATURECOLLECTIONTYPE,
-            FeatureCollectionTypeBinding.class);
+            ISOFeatureCollectionTypeBinding.class);
         container.registerComponentImplementation(WFS_ISO.FEATURESLOCKEDTYPE,
             FeaturesLockedTypeBinding.class);
         container.registerComponentImplementation(WFS_ISO.FEATURESNOTLOCKEDTYPE,

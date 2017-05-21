@@ -158,7 +158,7 @@ public class ISORetypingDataStore implements DataStore {
         reader = wrapped.getFeatureReader(retypeQuery(query, map), transaction);
         if (map.isUnchanged())
             return reader;
-        return new ISORetypingFeatureCollection.RetypingFeatureReader(reader, map.getFeatureType());
+        return new ISORetypingFeatureCollection.ISORetypingFeatureReader(reader, map.getFeatureType());
     }
 
     public SimpleFeatureSource getFeatureSource(String typeName) throws IOException {
