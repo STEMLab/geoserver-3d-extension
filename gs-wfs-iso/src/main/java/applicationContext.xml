@@ -122,6 +122,27 @@
     <!-- 1.0 Transaction element handlers -->
   
     <bean id="wfsFactoryExtension-iso" class="org.geoserver.wfs.WFSFactoryExtension_ISO"/>
+    
+    <!-- Transaction element handlers -->
+    <bean id="wfsInsertElementHandler-iso" class="org.geoserver.wfs.ISOInsertElementHandler">
+      <constructor-arg ref="geoServer"/>
+      <constructor-arg ref="filterFactory3d"/>
+    </bean>
+    
+    <!-- <bean id="wfsUpdateElementHandler-iso" class="org.geoserver.wfs.ISOUpdateElementHandler">
+      <constructor-arg ref="geoServer"/>
+    </bean>
+    
+    <bean id="wfsDeleteElementHandler-iso" class="org.geoserver.wfs.ISODeleteElementHandler">
+      <constructor-arg ref="geoServer"/>
+    </bean>
+
+    <bean id="wfsReplaceElementHandler-iso" class="org.geoserver.wfs.ISOReplaceElementHandler">
+      <constructor-arg ref="geoServer"/>
+    </bean>
+    
+    <bean id="wfsNativeElementHandler-iso" class="org.geoserver.wfs.ISONativeElementHandler">
+    </bean> -->
 	
 	<!-- http url mapping -->
 	<bean id="wfsURLMappingISO"

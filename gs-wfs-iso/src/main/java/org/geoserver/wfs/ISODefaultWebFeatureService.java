@@ -24,7 +24,7 @@ import org.geoserver.wfs.request.FeatureCollectionResponse;
 import org.geoserver.wfs.request.GetCapabilitiesRequest;
 import org.geoserver.wfs.request.GetFeatureRequest3D;
 import org.geoserver.wfs.request.LockFeatureRequest;
-import org.geoserver.wfs.request.TransactionRequest;
+import org.geoserver.wfs.request.TransactionRequest3D;
 import org.geotools.xml.transform.TransformerBase;
 import org.opengis.filter.FilterFactory2;
 import org.springframework.beans.BeansException;
@@ -166,11 +166,11 @@ public class ISODefaultWebFeatureService implements WebFeatureService, Applicati
      */
     public TransactionResponseType transaction(TransactionType request)
         throws WFSException {
-        Transaction transaction = new Transaction(getServiceInfo(), catalog, context);
+        Transaction3D transaction = new Transaction3D(getServiceInfo(), catalog, context);
         transaction.setFilterFactory(filterFactory);
 
         return (TransactionResponseType) 
-            transaction.transaction(new TransactionRequest.WFS11(request)).getAdaptee();
+            transaction.transaction(new TransactionRequest3D.WFS11(request)).getAdaptee();
     }
     
     /**
