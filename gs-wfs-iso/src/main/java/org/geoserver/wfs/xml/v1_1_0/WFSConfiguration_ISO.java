@@ -203,7 +203,7 @@ public class WFSConfiguration_ISO extends Configuration {
         container.registerComponentImplementation(WFS_ISO.INSERTEDFEATURETYPE,
             InsertedFeatureTypeBinding.class);
         container.registerComponentImplementation(WFS_ISO.INSERTELEMENTTYPE,
-            InsertElementTypeBinding.class);
+            ISOInsertElementTypeBinding.class);
         container.registerComponentImplementation(WFS_ISO.INSERTRESULTSTYPE,
             InsertResultTypeBinding.class);
         container.registerComponentImplementation(WFS_ISO.LOCKFEATURERESPONSETYPE,

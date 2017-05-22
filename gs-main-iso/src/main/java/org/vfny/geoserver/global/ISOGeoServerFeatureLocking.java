@@ -59,7 +59,7 @@ public class ISOGeoServerFeatureLocking extends ISOGeoServerFeatureStore impleme
      *
      * @throws UnsupportedOperationException DOCUMENT ME!
      *
-     * @see org.vfny.geoserver.global.ISOGeoServerFeatureStore#setFeatureLock(org.geotools.data.FeatureLock)
+     * @see org.vfny.geoserver.global.GeoServerFeatureStore#setFeatureLock(org.geotools.data.FeatureLock)
      */
     public void setFeatureLock(FeatureLock lock) {
         if (source instanceof FeatureLocking) {
