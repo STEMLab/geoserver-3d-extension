@@ -36,6 +36,7 @@ import org.geoserver.web.wicket.ImageAjaxLink;
 import org.geoserver.web.wicket.ParamResourceModel;
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureSource;
+import org.geotools.feature.simple.ISOSimpleFeatureTypeBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeature;
@@ -192,7 +193,7 @@ public class ISONewFeatureTypePage extends GeoServerSecuredPage {
     }
 
     SimpleFeatureType buildFeatureType() {
-        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        ISOSimpleFeatureTypeBuilder builder = new ISOSimpleFeatureTypeBuilder();
         for (ISOAttributeDescription att : attributesProvider.getAttributes()) {
             if (att.getSize() > 0) {
                 builder.length(att.getSize());

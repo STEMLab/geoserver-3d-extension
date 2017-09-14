@@ -46,7 +46,7 @@ public class WfsXmlReader_ISO extends XmlRequestReader {
     EntityResolverProvider entityResolverProvider;
     
     public WfsXmlReader_ISO(String element, GeoServer gs, Configuration configuration) {
-        this(element, gs, configuration, "3dwfs");        
+        this(element, gs, configuration, "wfs3d");        
     }
     
     protected WfsXmlReader_ISO(String element, GeoServer gs, Configuration configuration, String serviceId) {

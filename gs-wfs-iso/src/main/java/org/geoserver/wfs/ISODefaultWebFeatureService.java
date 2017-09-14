@@ -6,6 +6,22 @@ package org.geoserver.wfs;
  */
 
 
+import org.geoserver.catalog.Catalog;
+import org.geoserver.catalog.FeatureTypeInfo;
+import org.geoserver.config.GeoServer;
+import org.geoserver.wfs.request.DescribeFeatureTypeRequest;
+import org.geoserver.wfs.request.FeatureCollectionResponse;
+import org.geoserver.wfs.request.GetCapabilitiesRequest3D;
+import org.geoserver.wfs.request.GetFeatureRequest3D;
+import org.geoserver.wfs.request.LockFeatureRequest;
+import org.geoserver.wfs.request.TransactionRequest3D;
+import org.geotools.filter.ISOFilterFactoryImpl;
+import org.geotools.xml.transform.TransformerBase;
+import org.opengis.filter.FilterFactory2;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
 import net.opengis.wfs.DescribeFeatureTypeType;
 import net.opengis.wfs.GetCapabilitiesType;
 import net.opengis.wfs.GetFeatureType;
@@ -15,21 +31,6 @@ import net.opengis.wfs.LockFeatureResponseType;
 import net.opengis.wfs.LockFeatureType;
 import net.opengis.wfs.TransactionResponseType;
 import net.opengis.wfs.TransactionType;
-
-import org.geoserver.catalog.Catalog;
-import org.geoserver.catalog.FeatureTypeInfo;
-import org.geoserver.config.GeoServer;
-import org.geoserver.wfs.request.DescribeFeatureTypeRequest;
-import org.geoserver.wfs.request.FeatureCollectionResponse;
-import org.geoserver.wfs.request.GetCapabilitiesRequest;
-import org.geoserver.wfs.request.GetFeatureRequest3D;
-import org.geoserver.wfs.request.LockFeatureRequest;
-import org.geoserver.wfs.request.TransactionRequest3D;
-import org.geotools.xml.transform.TransformerBase;
-import org.opengis.filter.FilterFactory2;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
 
 /**
@@ -87,8 +88,8 @@ public class ISODefaultWebFeatureService implements WebFeatureService, Applicati
      */
     public TransformerBase getCapabilities(GetCapabilitiesType request)
         throws WFSException {
-        return new GetCapabilities(getServiceInfo(), catalog, WFSExtensions.findExtendedCapabilitiesProviders(context))
-            .run(new GetCapabilitiesRequest.WFS11(request));
+        return new GetCapabilities3D(getServiceInfo(), catalog, WFSExtensions.findExtendedCapabilitiesProviders(context))
+            .run(new GetCapabilitiesRequest3D.WFS11(request));
     }
     
     /**
@@ -118,7 +119,7 @@ public class ISODefaultWebFeatureService implements WebFeatureService, Applicati
     public FeatureCollectionResponse getFeature(GetFeatureType request)
         throws WFSException {
         GetFeature3D getFeature = new GetFeature3D(getServiceInfo(), catalog);
-        getFeature.setFilterFactory(filterFactory);
+        getFeature.setFilterFactory(new ISOFilterFactoryImpl());
 
         return getFeature.run(new GetFeatureRequest3D.WFS11(request));
     }

@@ -77,7 +77,7 @@ public class ISONewDataPage extends GeoServerSecuredPage {
         Collections.sort(sortedDsNames);
 
         final CatalogIconFactory icons = CatalogIconFactory.get();
-        final ListView dataStoreLinks = new ListView("vectorResources", sortedDsNames) {
+        final ListView dataStoreLinks = new ListView("vectorResources2", sortedDsNames) {
             @Override
             protected void populateItem(ListItem item) {
                 final String dataStoreFactoryName = item.getDefaultModelObjectAsString();

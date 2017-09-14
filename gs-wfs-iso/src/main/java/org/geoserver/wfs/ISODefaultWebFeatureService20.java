@@ -29,7 +29,7 @@ import org.geoserver.catalog.FeatureTypeInfo;
 import org.geoserver.config.GeoServer;
 import org.geoserver.wfs.request.DescribeFeatureTypeRequest;
 import org.geoserver.wfs.request.FeatureCollectionResponse;
-import org.geoserver.wfs.request.GetCapabilitiesRequest;
+import org.geoserver.wfs.request.GetCapabilitiesRequest3D;
 import org.geoserver.wfs.request.GetFeatureRequest3D;
 import org.geoserver.wfs.request.LockFeatureRequest;
 import org.geoserver.wfs.request.TransactionRequest3D;
@@ -80,8 +80,8 @@ public class ISODefaultWebFeatureService20 implements WebFeatureService20, Appli
     }
 
     public TransformerBase getCapabilities(GetCapabilitiesType request) throws WFSException {
-        return new GetCapabilities(getServiceInfo(), getCatalog(), WFSExtensions.findExtendedCapabilitiesProviders(context))
-        .run(new GetCapabilitiesRequest.WFS20(request));
+        return new GetCapabilities3D(getServiceInfo(), getCatalog(), WFSExtensions.findExtendedCapabilitiesProviders(context))
+        .run(new GetCapabilitiesRequest3D.WFS20(request));
     }
     
     public FeatureTypeInfo[] describeFeatureType(DescribeFeatureTypeType request)

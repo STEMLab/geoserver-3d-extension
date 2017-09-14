@@ -217,7 +217,7 @@ public class WFSConfiguration_ISO extends Configuration {
         container.registerComponentImplementation(WFS_ISO.OUTPUTFORMATLISTTYPE,
             OutputFormatListTypeBinding.class);
         container.registerComponentImplementation(WFS_ISO.PROPERTYTYPE, PropertyTypeBinding.class);
-        container.registerComponentImplementation(WFS_ISO.QUERYTYPE, QueryTypeBinding.class);
+        container.registerComponentImplementation(WFS_ISO.QUERYTYPE, ISOQueryTypeBinding.class);
         container.registerComponentImplementation(WFS_ISO.RESULTTYPETYPE, ResultTypeTypeBinding.class);
         container.registerComponentImplementation(WFS_ISO.TRANSACTIONRESPONSETYPE,
             TransactionResponseTypeBinding.class);
