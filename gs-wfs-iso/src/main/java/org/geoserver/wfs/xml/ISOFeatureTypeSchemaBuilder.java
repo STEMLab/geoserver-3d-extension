@@ -893,7 +893,7 @@ public abstract class ISOFeatureTypeSchemaBuilder {
                     "version", "1.0.0",
                     "service", "WFS3D");
             gmlPrefix = "gml";
-            xmlConfiguration = new GMLConfiguration_ISO();
+            xmlConfiguration = new org.geotools.gml2.iso.GMLConfiguration_ISO();
         }
 
         protected XSDSchema gmlSchema() {

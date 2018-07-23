@@ -7,14 +7,14 @@ package org.vfny.geoserver.global;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import org.geoserver.feature.RetypingFeatureCollection;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureStore;
+import org.geotools.data.ISODataUtilities;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.data.store.ISOReTypingFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -22,7 +22,6 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.identity.FeatureId;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 
 /**
@@ -43,14 +42,14 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Gabriel Rold?n
  * @version $Id$
  */
-public class GeoServerFeatureStore extends ISOGeoServerFeatureSource implements SimpleFeatureStore {
+public class ISOGeoServerFeatureStore extends ISOGeoServerFeatureSource implements SimpleFeatureStore {
     /**
      * Creates a new DEFQueryFeatureLocking object.
      *
      * @param store GeoTools2 FeatureSource
      * @param settings Settings for this store
      */
-    GeoServerFeatureStore(FeatureStore<SimpleFeatureType, SimpleFeature> store, Settings settings) {
+    ISOGeoServerFeatureStore(FeatureStore<SimpleFeatureType, SimpleFeature> store, Settings settings) {
         super(store, settings);
     }
 
@@ -74,7 +73,7 @@ public class GeoServerFeatureStore extends ISOGeoServerFeatureSource implements 
 
         //check if the feature collection needs to be retyped
         if (!store.getSchema().equals(fc.getSchema())) {
-            fc = new RetypingFeatureCollection(DataUtilities.simple(fc), store.getSchema());
+            fc = new ISOReTypingFeatureCollection(ISODataUtilities.simple(fc), store.getSchema());
         }
 
         return store().addFeatures(fc);

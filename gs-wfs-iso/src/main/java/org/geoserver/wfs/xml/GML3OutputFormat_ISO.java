@@ -94,7 +94,7 @@ public class GML3OutputFormat_ISO extends WFSGetFeatureOutputFormat {
     }
 
     public GML3OutputFormat_ISO(GeoServer geoServer, WFSConfiguration_ISO configuration) {
-        this(new HashSet(Arrays.asList(new Object[] {"gml3", "text/xml; subtype=gml/3.1.1"})), 
+        this(new HashSet(Arrays.asList(new Object[] {"gml3_iso", "text/xml; subtype=gml3d/3.1.1"})), 
             geoServer, configuration);
     }
     
@@ -108,11 +108,11 @@ public class GML3OutputFormat_ISO extends WFSGetFeatureOutputFormat {
     }
 
     public String getMimeType(Object value, Operation operation) {
-        return "text/xml; subtype=gml/3.1.1";
+        return "text/xml; subtype=gml3d/3.1.1";
     }
     
     public String getCapabilitiesElementName() {
-        return "GML3";
+        return "GML3_ISO";
     }
 
     protected void write(FeatureCollectionResponse results, OutputStream output, Operation getFeature)

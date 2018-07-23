@@ -60,7 +60,7 @@ public class WFSConfiguration_ISO extends Configuration {
     /**
      * logger
      */
-    static Logger LOGGER = Logging.getLogger( "org.geoserver.wfs");
+    static Logger LOGGER = Logging.getLogger("org.geoserver.wfs");
     
     /**
      * catalog
@@ -72,10 +72,10 @@ public class WFSConfiguration_ISO extends Configuration {
      */
     protected ISOFeatureTypeSchemaBuilder schemaBuilder;
 
-    public WFSConfiguration_ISO(GeoServer geoServer, ISOFeatureTypeSchemaBuilder schemaBuilder, final WFS_ISO wfs) {
+    public WFSConfiguration_ISO(Catalog catalog, ISOFeatureTypeSchemaBuilder schemaBuilder, final WFS_ISO wfs) {
         super( wfs );
 
-        this.catalog = geoServer.getCatalog();
+        this.catalog = catalog;
         this.schemaBuilder = schemaBuilder;
         
         catalog.addListener(new CatalogListener() {
@@ -117,7 +117,21 @@ public class WFSConfiguration_ISO extends Configuration {
                 wfs.dispose();
             }
         });
-        geoServer.addListener(new ConfigurationListenerAdapter() {
+        
+        catalog.getResourcePool().addListener(new ResourcePool.Listener() {
+            
+            public void disposed(FeatureTypeInfo featureType, FeatureType ft) {
+            }
+            
+            public void disposed(CoverageStoreInfo coverageStore, GridCoverageReader gcr) {
+            }
+            
+            public void disposed(DataStoreInfo dataStore, DataAccess da) {
+                wfs.dispose();
+            }
+        });
+        
+       /*geoServer.addListener(new ConfigurationListenerAdapter() {
             
             public void reloaded() {
                 wfs.dispose();
@@ -129,7 +143,7 @@ public class WFSConfiguration_ISO extends Configuration {
                     reloaded();
                 }
             }
-        });
+        });*/
         addDependency(new OGCConfiguration_ISO());
         addDependency(new OWSConfiguration());
         addDependency(new GMLConfiguration_ISO());
@@ -165,7 +179,7 @@ public class WFSConfiguration_ISO extends Configuration {
         container.registerComponentImplementation(WFS_ISO.DESCRIBEFEATURETYPETYPE,
             DescribeFeatureTypeTypeBinding.class);
         container.registerComponentImplementation(WFS_ISO.FEATURECOLLECTIONTYPE,
-            FeatureCollectionTypeBinding.class);
+            ISOFeatureCollectionTypeBinding.class);
         container.registerComponentImplementation(WFS_ISO.FEATURESLOCKEDTYPE,
             FeaturesLockedTypeBinding.class);
         container.registerComponentImplementation(WFS_ISO.FEATURESNOTLOCKEDTYPE,
@@ -189,7 +203,7 @@ public class WFSConfiguration_ISO extends Configuration {
         container.registerComponentImplementation(WFS_ISO.INSERTEDFEATURETYPE,
             InsertedFeatureTypeBinding.class);
         container.registerComponentImplementation(WFS_ISO.INSERTELEMENTTYPE,
-            InsertElementTypeBinding.class);
+            ISOInsertElementTypeBinding.class);
         container.registerComponentImplementation(WFS_ISO.INSERTRESULTSTYPE,
             InsertResultTypeBinding.class);
         container.registerComponentImplementation(WFS_ISO.LOCKFEATURERESPONSETYPE,
@@ -203,7 +217,7 @@ public class WFSConfiguration_ISO extends Configuration {
         container.registerComponentImplementation(WFS_ISO.OUTPUTFORMATLISTTYPE,
             OutputFormatListTypeBinding.class);
         container.registerComponentImplementation(WFS_ISO.PROPERTYTYPE, PropertyTypeBinding.class);
-        container.registerComponentImplementation(WFS_ISO.QUERYTYPE, QueryTypeBinding.class);
+        container.registerComponentImplementation(WFS_ISO.QUERYTYPE, ISOQueryTypeBinding.class);
         container.registerComponentImplementation(WFS_ISO.RESULTTYPETYPE, ResultTypeTypeBinding.class);
         container.registerComponentImplementation(WFS_ISO.TRANSACTIONRESPONSETYPE,
             TransactionResponseTypeBinding.class);
@@ -249,7 +263,7 @@ public class WFSConfiguration_ISO extends Configuration {
         //seed the cache with entries from the catalog
         context.registerComponentInstance(FeatureTypeCache.class, new CatalogFeatureTypeCache(getCatalog()));
 
-        context.registerComponentInstance(new CurvedGeometryFactory(Double.MAX_VALUE));
+        //context.registerComponentInstance(new CurvedGeometryFactory(Double.MAX_VALUE));
 
     }
 

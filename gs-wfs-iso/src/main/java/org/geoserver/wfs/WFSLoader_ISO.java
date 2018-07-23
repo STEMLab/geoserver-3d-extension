@@ -23,7 +23,7 @@ public class WFSLoader_ISO extends LegacyServiceLoader<WFSInfo> {
             throws Exception {
         
         WFSInfoImpl_ISO wfs = new WFSInfoImpl_ISO();
-        wfs.setId( "wfs3d" );
+        wfs.setId( "wfs-3d" );
         
         Map<String,Object> properties = reader.wfs();
         readCommon( wfs, properties, geoServer );

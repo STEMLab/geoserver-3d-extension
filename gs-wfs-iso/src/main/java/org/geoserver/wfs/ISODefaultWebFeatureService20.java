@@ -29,10 +29,10 @@ import org.geoserver.catalog.FeatureTypeInfo;
 import org.geoserver.config.GeoServer;
 import org.geoserver.wfs.request.DescribeFeatureTypeRequest;
 import org.geoserver.wfs.request.FeatureCollectionResponse;
-import org.geoserver.wfs.request.GetCapabilitiesRequest;
+import org.geoserver.wfs.request.GetCapabilitiesRequest3D;
 import org.geoserver.wfs.request.GetFeatureRequest3D;
 import org.geoserver.wfs.request.LockFeatureRequest;
-import org.geoserver.wfs.request.TransactionRequest;
+import org.geoserver.wfs.request.TransactionRequest3D;
 import org.geotools.xml.transform.TransformerBase;
 import org.opengis.filter.FilterFactory2;
 import org.springframework.beans.BeansException;
@@ -80,8 +80,8 @@ public class ISODefaultWebFeatureService20 implements WebFeatureService20, Appli
     }
 
     public TransformerBase getCapabilities(GetCapabilitiesType request) throws WFSException {
-        return new GetCapabilities(getServiceInfo(), getCatalog(), WFSExtensions.findExtendedCapabilitiesProviders(context))
-        .run(new GetCapabilitiesRequest.WFS20(request));
+        return new GetCapabilities3D(getServiceInfo(), getCatalog(), WFSExtensions.findExtendedCapabilitiesProviders(context))
+        .run(new GetCapabilitiesRequest3D.WFS20(request));
     }
     
     public FeatureTypeInfo[] describeFeatureType(DescribeFeatureTypeType request)
@@ -114,11 +114,11 @@ public class ISODefaultWebFeatureService20 implements WebFeatureService20, Appli
     }
     
     public TransactionResponseType transaction(TransactionType request) throws WFSException {
-        Transaction tx = new Transaction(getServiceInfo(), getCatalog(), context);
+        Transaction3D tx = new Transaction3D(getServiceInfo(), getCatalog(), context);
         tx.setFilterFactory(filterFactory);
         
         return (TransactionResponseType) 
-            tx.transaction(new TransactionRequest.WFS20(request)).getAdaptee();
+            tx.transaction(new TransactionRequest3D.WFS20(request)).getAdaptee();
     }
     
     public ListStoredQueriesResponseType listStoredQueries(ListStoredQueriesType request) 

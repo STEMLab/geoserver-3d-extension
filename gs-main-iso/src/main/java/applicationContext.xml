@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ Copyright (C) 2014 - 2016 Open Source Geospatial Foundation. All rights reserved.
+ This code is licensed under the GPL 2.0 license, available at the root
+ application directory.
+ -->
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+    <bean class="org.geoserver.platform.ModuleStatusImpl">
+      <constructor-arg index="0" value="gs-main-iso"/>
+      <constructor-arg index="1" value="GeoServer Main for 3D"/>
+    </bean>
+
+<!--     <bean id="isoResourceLoader" class="org.geoserver.platform.ISOGeoServerResourceLoader">
+	    <constructor-arg ref="resourceStore"/>
+    </bean>
+    
+    <bean id="isoRawCatalog" class="org.geoserver.catalog.impl.ISOCatalogImpl" depends-on="extensions">
+         <property name="resourceLoader" ref="isoResourceLoader"/>  
+    </bean>
+    <bean id="isoSecureCatalog" class="org.geoserver.security.SecureCatalogImpl" depends-on="accessRulesDao,extensions">
+        <constructor-arg ref="isoRawCatalog" /> 
+    </bean>
+    <bean id="isoAdvertisedCatalog" class="org.geoserver.catalog.impl.AdvertisedCatalog">
+        <constructor-arg ref="isoSecureCatalog" />
+        <property name="layerGroupVisibilityPolicy">
+        	<bean id="org.geoserver.catalog.LayerGroupVisibilityPolicy.HIDE_NEVER" 
+        		class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
+        </property>
+    </bean>    
+    <bean id="isoLocalWorkspaceCatalog" class="org.geoserver.catalog.impl.LocalWorkspaceCatalog">
+        <constructor-arg ref="isoAdvertisedCatalog" />
+    </bean>
+    
+    Switch this when you want to enable the secure catalog by default
+    alias name="secureCatalog" alias="catalog"/
+    <alias name="isoLocalWorkspaceCatalog" alias="isoCatalog"/> 
+    
+	security wrapper factories 
+	<bean id="isoDefaultDataSecurityFactory" class="org.geoserver.security.decorators.ISODefaultSecureDataFactory"/>
+	<bean id="isoDefaultCatalogSecurityFactory" class="org.geoserver.security.decorators.ISODefaultSecureCatalogFactory"/>
+   -->
+	
+</beans>

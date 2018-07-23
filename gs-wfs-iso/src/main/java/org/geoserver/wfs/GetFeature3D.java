@@ -379,8 +379,8 @@ public class GetFeature3D {
                             filter = SimplifyingFilterVisitor.simplify(filter);
 
                             // join, need to separate the joining filter from other filters
-                            JoinExtractingVisitor extractor = 
-                                    new JoinExtractingVisitor(metas, query.getAliases());
+                            ISOJoinExtractingVisitor extractor = 
+                                    new ISOJoinExtractingVisitor(metas, query.getAliases());
                             filter.accept(extractor, null);
 
                             primaryAlias = extractor.getPrimaryAlias();
